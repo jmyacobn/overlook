@@ -20,6 +20,16 @@ header {
   align-items: flex-end;
 }
 
+h2 {
+  margin-left: 2vw;
+  font-size: 1.75em;
+}
+
+p {
+  margin-left: 2vw;
+  font-size: 1.25em;
+}
+
 img {
   height: 25%;
   width: 25%;
@@ -49,12 +59,11 @@ main {
   color: #0d3b66;
 }
 
-h2 {
-  margin-left: 2vw;
-  font-size: 1.75em;
-}
-
-p {
-  margin-left: 2vw;
-  font-size: 1.25em;
+.booking-cards {
+  display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 3vh;
+    margin-left: 2vw;
+    margin-right: 3vw;
+    margin-bottom: 3vh;
 }
