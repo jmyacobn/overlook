@@ -4,11 +4,20 @@ class Customer {
         this.name = customerData.name;
     }
     getAllBookings(bookingData) {
-        const bookedRooms = bookingData.filter(booking => this.id === booking.userID)
+        const bookedRooms = bookingData.filter(booking => {
+          return this.id === booking.userID
+        })
         return bookedRooms
     }
-    getTotalCost() {
-
+    getTotalCost(bookingData, roomData) {
+        const costOfAllBookedRooms = this.getAllBookings(bookingData).reduce((totalCost, booking) => {
+            let customerRoom = roomData.find(room => {
+                return room.number === booking.roomNumber
+            })
+            totalCost += customerRoom.costPerNight
+            return totalCost
+        }, 0)
+        return costOfAllBookedRooms
     }
 }
 
