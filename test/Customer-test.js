@@ -21,4 +21,14 @@ describe('Customer', () => {
         expect(customer1.id).to.equal(1)
         expect(customer2.id).to.equal(2)
     })
+
+    it('should have property of name', () => {
+        expect(customer1.name).to.equal('Leatha Ullrich')
+        expect(customer2.name).to.equal('Rocio Schuster')
+    })
+
+    it('should have method to get all customer bookings', () => {
+        expect(customer1.getAllBookings(sampleBookings)).to.deep.equal([sampleBookings[0], sampleBookings[1], sampleBookings[2]])
+        expect(customer2.getAllBookings(sampleBookings)).to.deep.equal([sampleBookings[3], sampleBookings[4], sampleBookings[5]])
+    })
 })
