@@ -20,10 +20,6 @@ header {
   align-items: flex-end;
 }
 
-.user-info {
-  margin-left: 2vw;
-}
-
 img {
   height: 25%;
   width: 25%;
@@ -55,4 +51,10 @@ main {
 
 h2 {
   margin-left: 2vw;
+  font-size: 1.75em;
+}
+
+p {
+  margin-left: 2vw;
+  font-size: 1.25em;
 }
