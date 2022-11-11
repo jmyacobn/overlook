@@ -31,4 +31,9 @@ describe('Customer', () => {
         expect(customer1.getAllBookings(sampleBookings)).to.deep.equal([sampleBookings[0], sampleBookings[1], sampleBookings[2]])
         expect(customer2.getAllBookings(sampleBookings)).to.deep.equal([sampleBookings[3], sampleBookings[4], sampleBookings[5]])
     })
+
+    it('should have a method to calculate the total cost of all customer bookings', () => {
+        expect(customer1.getTotalCost(sampleBookings, sampleRooms)).to.equal(801.92)
+        expect(customer2.getTotalCost(sampleBookings, sampleRooms)).to.equal(1088.55)
+    })
 })
