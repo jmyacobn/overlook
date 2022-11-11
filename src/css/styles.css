@@ -35,3 +35,24 @@ img {
   flex-direction: column;
   align-items: center;
 }
+
+main {
+  display: flex;
+  height: 78vh;
+}
+
+.booking-form {
+  background-color: #f4d35e;
+  width: 20vw;
+  color: #0d3b66;
+ 
+}
+
+.bookings {
+  width: 80vw;
+  color: #0d3b66;
+}
+
+h2 {
+  margin-left: 2vw;
+}
