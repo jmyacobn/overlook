@@ -36,16 +36,8 @@ function fetchData() {
 function displayCustomerData(currentCustomer, allRooms, allBookings) {
     greeting.innerText = `Welcome, ${currentCustomer.name}!`
     cost.innerHTML = `Your total cost of bookings is $${currentCustomer.getTotalCost(allBookings, allRooms).toFixed(2)}.`
-    let userAllBookings = currentCustomer.getAllBookings(allBookings)
 
-    const date = new Date()
-    let day = date.getDate()
-    let month = date.getMonth() + 1
-    let year = date.getFullYear()
-    let currDate = `${year}/${month}/${day}`
-
-    const userUpcomingBookings = userAllBookings.filter(booking => booking.date >= currDate)
-    userUpcomingBookings.forEach(booking => {
+    currentCustomer.getUpcomingBookings(allBookings, getCurrentDate()).forEach(booking => {
         allRooms.forEach(room => {
             if(booking.roomNumber === room.number) {
                 upcomingBookings.innerHTML += 
@@ -61,8 +53,7 @@ function displayCustomerData(currentCustomer, allRooms, allBookings) {
         })
     })
 
-    const userPastBookings = userAllBookings.filter(booking => booking.date < currDate)
-    userPastBookings.forEach(booking => {
+    currentCustomer.getPastBookings(allBookings, getCurrentDate()).forEach(booking => {
         allRooms.forEach(room => {
             if(booking.roomNumber === room.number) {
                 pastBookings.innerHTML += 
@@ -77,6 +68,15 @@ function displayCustomerData(currentCustomer, allRooms, allBookings) {
             }
         })
     })
+}
+
+function getCurrentDate() {
+    const date = new Date()
+    let day = date.getDate()
+    let month = date.getMonth() + 1
+    let year = date.getFullYear()
+    let currDate = `${year}/${month}/${day}`
+    return currDate
 }
 
 function displayBidetStatus(room) {
