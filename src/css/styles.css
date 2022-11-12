@@ -47,21 +47,39 @@ main {
   height: 78vh;
 }
 
-.booking-form {
+.request-booking-section {
   background-color: #f4d35e;
-  width: 20vw;
+  width: 15vw;
   color: #0d3b66;
  
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2vw;
+  font-size: 1.25em;
+  width: fit-content;
+  height: 23vh;
+  justify-content: space-evenly;
+}
+
+button {
+  background-color: #0d3b66;
+  color: #f4d35e;
+  border-radius: 0.2rem;
+  height: 4vh;
+  cursor: pointer;
+}
+
 .bookings {
-  width: 80vw;
+  width: 85vw;
   color: #0d3b66;
 }
 
 .booking-cards {
   display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-gap: 3vh;
     margin-left: 2vw;
     margin-right: 3vw;
