@@ -47,11 +47,21 @@ main {
   height: 78vh;
 }
 
-.booking-form {
+.request-booking-section {
   background-color: #f4d35e;
   width: 20vw;
   color: #0d3b66;
  
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2vw;
+  font-size: 1.25em;
+  width: fit-content;
+  height: 15vh;
+  justify-content: space-evenly;
 }
 
 .bookings {

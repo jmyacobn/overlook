@@ -7,7 +7,6 @@
   <title>Webpack Starter Kit</title>
 </head>
 <body>
-  <!-- <img src="./images/turing-logo.png" alt="turing logo"> -->
   <header>
     <div class="user-info">
       <h2 class="greeting">Welcome, User!</h2>
@@ -19,10 +18,19 @@
     </div>
   </header>
   <main>
-    <section class="booking-form">
-      <h2>Book New Room</h2>
-      <form>
-
+    <section class="request-booking-section">
+      <h2>Book A Room</h2>
+      <form class="request-room">
+        <label for="check-in-date">Check-In Date:</label>
+        <input name="check-in-date" type="date"/>
+        <label for="room-type">Select Room Type:</label>
+        <select name="room-type" type="date">
+          <option value="all-rooms">All Rooms</option>
+          <option value="single-room">Single Room</option>
+          <option value="junior-suite">Junior Suite</option>
+          <option value="suite">Suite</option>
+          <option value="residential-suite">Residential Suite</option>
+        </select>
       </form>
     </section>
     <section class="bookings">
@@ -43,8 +51,6 @@
       </section>
     </section>
   </main>
-  <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->
   <script src="bundle.js"></script>
-
 </body>
 </html>
