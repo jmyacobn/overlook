@@ -44,23 +44,7 @@ function displayCustomerData(currentCustomer, allRooms, allBookings) {
     let month = date.getMonth() + 1
     let year = date.getFullYear()
     let currDate = `${year}/${month}/${day}`
- 
-    const userPastBookings = userAllBookings.filter(booking => booking.date < currDate)
-    userPastBookings.forEach(booking => {
-        allRooms.forEach(room => {
-            if(booking.roomNumber === room.number) {
-                pastBookings.innerHTML += 
-                `<article class="booking-card">
-                    <p>Date: ${booking.date}</p>
-                    <p>Room ${booking.roomNumber}</p>
-                    <p>${room.roomType.toUpperCase()}</p>
-                    <p>${room.numBeds} ${room.bedSize.charAt(0).toUpperCase()}${room.bedSize.slice(1)} Bed(s)</p>
-                    <p>$${room.costPerNight}</p>
-                </article>`
-            }
-        })
-    })
-   
+
     const userUpcomingBookings = userAllBookings.filter(booking => booking.date >= currDate)
     userUpcomingBookings.forEach(booking => {
         allRooms.forEach(room => {
@@ -68,14 +52,30 @@ function displayCustomerData(currentCustomer, allRooms, allBookings) {
                 upcomingBookings.innerHTML += 
                 `<article class="booking-card">
                     <p>Date: ${booking.date}</p>
-                    <p>Room ${booking.roomNumber}</p>
+                    <p>Room #${booking.roomNumber}</p>
                     <p>${room.roomType.toUpperCase()}</p>
                     <p>${room.numBeds} ${room.bedSize.charAt(0).toUpperCase()}${room.bedSize.slice(1)} Bed(s)</p>
+                    <p>Bidet: ${room.bidet}</p>
+                    <p>$${room.costPerNight}</p>
+                </article>`
+            }
+        })
+    })
+
+    const userPastBookings = userAllBookings.filter(booking => booking.date < currDate)
+    userPastBookings.forEach(booking => {
+        allRooms.forEach(room => {
+            if(booking.roomNumber === room.number) {
+                pastBookings.innerHTML += 
+                `<article class="booking-card">
+                    <p>Date: ${booking.date}</p>
+                    <p>Room #${booking.roomNumber}</p>
+                    <p>${room.roomType.toUpperCase()}</p>
+                    <p>${room.numBeds} ${room.bedSize.charAt(0).toUpperCase()}${room.bedSize.slice(1)} Bed(s)</p>
+                    <p>Bidet: ${room.bidet}</p>
                     <p>$${room.costPerNight}</p>
                 </article>`
             }
         })
     })
 }
-
-// ~~~~~~~~~~~~~~~~~~~~Helper Functions~~~~~~~~~~~~~~~~~~~~

@@ -7,5 +7,12 @@ class Room {
         this.bedCount = roomData.numBeds;
         this.roomCost = roomData.costPerNight;
     }
+    // displayBidetStatus() {
+    //     if(this.bidet) {
+    //         this.bidet = "Yes"
+    //     } else {
+    //         this.bidet = "No"
+    //     }
+    // }
 }
 export default Room
