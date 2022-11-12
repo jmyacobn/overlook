@@ -13,7 +13,7 @@
       <p>Your total cost of bookings is $XX.</p>
     </div>
     <div class="logo">
-      <img src="./images/5-stars.png">
+      <img src="./images/5-stars.png" alt="five stars above a hotel">
       <h1 class="title">Overlook Hotel</h1>
     </div>
   </header>
@@ -21,16 +21,18 @@
     <section class="request-booking-section">
       <h2>Book A Room</h2>
       <form class="request-room">
-        <label for="check-in-date">Check-In Date:</label>
-        <input name="check-in-date" type="date"/>
-        <label for="room-type">Select Room Type:</label>
-        <select name="room-type" type="date">
+        <label for="checkInDate">Check-In Date:</label>
+        <input name="check-in-date" type="date" id="checkInDate"/>
+        <label for="roomType">Select Room Type:</label>
+        <select name="room-type" type="date" id="roomType">
           <option value="all-rooms">All Rooms</option>
           <option value="single-room">Single Room</option>
           <option value="junior-suite">Junior Suite</option>
           <option value="suite">Suite</option>
           <option value="residential-suite">Residential Suite</option>
         </select>
+        <br>
+        <button label="submit-button" type="button">Find Available Rooms</button>
       </form>
     </section>
     <section class="bookings">
