@@ -14,6 +14,8 @@ let currentCustomer
 // ~~~~~~~~~~~~~~~~~~~~Query Selectors~~~~~~~~~~~~~~~~~~~~
 const greeting = document.querySelector('#greeting')
 const cost = document.querySelector('#costSummary')
+const pastBookings = document.querySelector('#pastBookingDisplay')
+const upcomingBookings = document.querySelector('#upcomingBookingDisplay')
 
 // ~~~~~~~~~~~~~~~~~~~~Event Listeners~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', fetchData())
@@ -45,14 +47,31 @@ function displayCustomerData(currentCustomer, allRooms, allBookings) {
     let year = date.getFullYear()
     let currDate = `${year}/${month}/${day}`
  
-
-    //Display all past bookings as cards
     const userPastBookings = userAllBookings.filter(booking => booking.date < currDate)
-    console.log(userPastBookings)
+    userPastBookings.forEach(booking => {
+        pastBookings.innerHTML += 
+        `<article class="booking-card">
+            <p>Date: ${booking.date}</p>
+            <p>Room ${booking.roomNumber}</p>
+            <p>Room Type: </p>
+            <p>Beds: </p>
+            <p>Bidet: </p>
+            <p>Cost: </p>
+        </article>`
+    })
    
-    //Display all upcoming bookings as cards
     const userUpcomingBookings = userAllBookings.filter(booking => booking.date >= currDate)
-    console.log(userUpcomingBookings)
+    userUpcomingBookings.forEach(booking => {
+        upcomingBookings.innerHTML += 
+        `<article class="booking-card">
+            <p>Date: ${booking.date}</p>
+            <p>Room ${booking.roomNumber}</p>
+            <p>Room Type: </p>
+            <p>Beds: </p>
+            <p>Bidet: </p>
+            <p>Cost: </p>
+        </article>`
+    })
 }
 
 // ~~~~~~~~~~~~~~~~~~~~Helper Functions~~~~~~~~~~~~~~~~~~~~

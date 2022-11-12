@@ -44,14 +44,13 @@ img {
 
 main {
   display: flex;
-  height: 78vh;
+  min-height: 78vh;
 }
 
 .request-booking-section {
   background-color: #f4d35e;
   width: 15vw;
   color: #0d3b66;
- 
 }
 
 form {
@@ -79,9 +78,15 @@ button {
 
 .booking-cards {
   display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     grid-gap: 3vh;
     margin-left: 2vw;
     margin-right: 3vw;
     margin-bottom: 3vh;
+}
+
+.booking-card {
+  width: 15vw;
+  background-color: #fdfcdc;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
 }
