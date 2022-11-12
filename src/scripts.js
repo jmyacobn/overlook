@@ -30,7 +30,6 @@ function fetchData() {
         allRooms = data[1].rooms
         allBookings = data[2].bookings
         currentCustomer = new Customer(allCustomers[Math.floor(Math.random() * allCustomers.length)])
-        console.log(currentCustomer)
         displayCustomerData(currentCustomer, allRooms, allBookings)
     })
 }
@@ -39,7 +38,6 @@ function displayCustomerData(currentCustomer, allRooms, allBookings) {
     greeting.innerText = `Welcome, ${currentCustomer.name}!`
     cost.innerHTML = `Your total cost of bookings is $${currentCustomer.getTotalCost(allBookings, allRooms).toFixed(2)}.`
     let userAllBookings = currentCustomer.getAllBookings(allBookings)
-    console.log(userAllBookings)
 
     const date = new Date()
     let day = date.getDate()
@@ -49,28 +47,34 @@ function displayCustomerData(currentCustomer, allRooms, allBookings) {
  
     const userPastBookings = userAllBookings.filter(booking => booking.date < currDate)
     userPastBookings.forEach(booking => {
-        pastBookings.innerHTML += 
-        `<article class="booking-card">
-            <p>Date: ${booking.date}</p>
-            <p>Room ${booking.roomNumber}</p>
-            <p>Room Type: </p>
-            <p>Beds: </p>
-            <p>Bidet: </p>
-            <p>Cost: </p>
-        </article>`
+        allRooms.forEach(room => {
+            if(booking.roomNumber === room.number) {
+                pastBookings.innerHTML += 
+                `<article class="booking-card">
+                    <p>Date: ${booking.date}</p>
+                    <p>Room ${booking.roomNumber}</p>
+                    <p>${room.roomType.toUpperCase()}</p>
+                    <p>${room.numBeds} ${room.bedSize.charAt(0).toUpperCase()}${room.bedSize.slice(1)} Bed(s)</p>
+                    <p>$${room.costPerNight}</p>
+                </article>`
+            }
+        })
     })
    
     const userUpcomingBookings = userAllBookings.filter(booking => booking.date >= currDate)
     userUpcomingBookings.forEach(booking => {
-        upcomingBookings.innerHTML += 
-        `<article class="booking-card">
-            <p>Date: ${booking.date}</p>
-            <p>Room ${booking.roomNumber}</p>
-            <p>Room Type: </p>
-            <p>Beds: </p>
-            <p>Bidet: </p>
-            <p>Cost: </p>
-        </article>`
+        allRooms.forEach(room => {
+            if(booking.roomNumber === room.number) {
+                upcomingBookings.innerHTML += 
+                `<article class="booking-card">
+                    <p>Date: ${booking.date}</p>
+                    <p>Room ${booking.roomNumber}</p>
+                    <p>${room.roomType.toUpperCase()}</p>
+                    <p>${room.numBeds} ${room.bedSize.charAt(0).toUpperCase()}${room.bedSize.slice(1)} Bed(s)</p>
+                    <p>$${room.costPerNight}</p>
+                </article>`
+            }
+        })
     })
 }
 
