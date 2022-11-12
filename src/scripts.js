@@ -10,9 +10,10 @@ import Booking from './classes/Booking'
 let allCustomers
 let allRooms
 let allBookings
-
+let currentCustomer
 // ~~~~~~~~~~~~~~~~~~~~Query Selectors~~~~~~~~~~~~~~~~~~~~
-
+const greeting = document.querySelector('#greeting')
+const cost = document.querySelector('#costSummary')
 
 // ~~~~~~~~~~~~~~~~~~~~Event Listeners~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', fetchData())
@@ -26,16 +27,32 @@ function fetchData() {
         allCustomers = data[0].customers
         allRooms = data[1].rooms
         allBookings = data[2].bookings
-        // displayCustomerData(user)
+        currentCustomer = new Customer(allCustomers[Math.floor(Math.random() * allCustomers.length)])
+        console.log(currentCustomer)
+        displayCustomerData(currentCustomer, allRooms, allBookings)
     })
 }
 
-// function displayCustomerData(user) {
-//     //Hard code user until we have log in page?
-//     //Add user name in header
-//     //Add total cost in header
-//     //Display all past bookings as cards
-//     //Display all upcoming bookings as cards
-// }
+function displayCustomerData(currentCustomer, allRooms, allBookings) {
+    greeting.innerText = `Welcome, ${currentCustomer.name}!`
+    cost.innerHTML = `Your total cost of bookings is $${currentCustomer.getTotalCost(allBookings, allRooms).toFixed(2)}.`
+    let userAllBookings = currentCustomer.getAllBookings(allBookings)
+    console.log(userAllBookings)
+
+    const date = new Date()
+    let day = date.getDate()
+    let month = date.getMonth() + 1
+    let year = date.getFullYear()
+    let currDate = `${year}/${month}/${day}`
+ 
+
+    //Display all past bookings as cards
+    const userPastBookings = userAllBookings.filter(booking => booking.date < currDate)
+    console.log(userPastBookings)
+   
+    //Display all upcoming bookings as cards
+    const userUpcomingBookings = userAllBookings.filter(booking => booking.date >= currDate)
+    console.log(userUpcomingBookings)
+}
 
 // ~~~~~~~~~~~~~~~~~~~~Helper Functions~~~~~~~~~~~~~~~~~~~~
