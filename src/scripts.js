@@ -25,7 +25,6 @@ window.addEventListener('load', fetchData())
 function fetchData() {
     Promise.all([getData('customers'), getData('rooms'), getData('bookings')])
     .then(data => {
-        console.log(data)
         allCustomers = data[0].customers
         allRooms = data[1].rooms
         allBookings = data[2].bookings
@@ -55,7 +54,7 @@ function displayCustomerData(currentCustomer, allRooms, allBookings) {
                     <p>Room #${booking.roomNumber}</p>
                     <p>${room.roomType.toUpperCase()}</p>
                     <p>${room.numBeds} ${room.bedSize.charAt(0).toUpperCase()}${room.bedSize.slice(1)} Bed(s)</p>
-                    <p>Bidet: ${room.bidet}</p>
+                    <p>Bidet: ${displayBidetStatus(room)}</p>
                     <p>$${room.costPerNight}</p>
                 </article>`
             }
@@ -72,10 +71,18 @@ function displayCustomerData(currentCustomer, allRooms, allBookings) {
                     <p>Room #${booking.roomNumber}</p>
                     <p>${room.roomType.toUpperCase()}</p>
                     <p>${room.numBeds} ${room.bedSize.charAt(0).toUpperCase()}${room.bedSize.slice(1)} Bed(s)</p>
-                    <p>Bidet: ${room.bidet}</p>
+                    <p>Bidet: ${displayBidetStatus(room)}</p>
                     <p>$${room.costPerNight}</p>
                 </article>`
             }
         })
     })
+}
+
+function displayBidetStatus(room) {
+    if (room.bidet) {
+        return "Yes"
+    } else {
+        return "No"
+    }
 }
