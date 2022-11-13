@@ -11,8 +11,7 @@ let allCustomers
 let allRooms
 let allBookings
 let currentCustomer
-let filteredRoomsByDate = []
-let filteredRoomsByType = []
+let filteredRooms = []
 // ~~~~~~~~~~~~~~~~~~~~Query Selectors~~~~~~~~~~~~~~~~~~~~
 const greeting = document.querySelector('#greeting')
 const cost = document.querySelector('#costSummary')
@@ -26,6 +25,7 @@ const availableRooms = document.querySelector('#availableRoomsDisplay')
 // ~~~~~~~~~~~~~~~~~~~~Event Listeners~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', fetchData)
 submitButton.addEventListener('click', displayAvailableRooms)
+availableRooms.addEventListener('click', bookRoom)
 
 // ~~~~~~~~~~~~~~~~~~~~Functions~~~~~~~~~~~~~~~~~~~~
 function fetchData() {
@@ -50,11 +50,11 @@ function displayAvailableRooms() {
     filterRoomsByType()
     availableRooms.innerHTML = ''
     if (selectedDate.value !== "" && selectedRoom.value !== "all-rooms") {
-        filteredRoomsByType.forEach(room => {
+        filteredRooms.forEach(room => {
             availableRooms.innerHTML += availableRoomCards(room)
         })
     } else if (selectedDate.value !== "" && selectedRoom.value === "all-rooms") {
-        filteredRoomsByDate.forEach(room => {
+        filteredRooms.forEach(room => {
             availableRooms.innerHTML += availableRoomCards(room)
         })
     } else if (selectedDate.value !== "" && selectedRoom.value !== "all-rooms" && !filteredRoomsByType.length) {
@@ -64,6 +64,17 @@ function displayAvailableRooms() {
     }
 }
 
+function bookRoom(event) {
+    if(event.target.classList.contains('book-room')) {
+        console.log(filteredRooms)
+        filteredRooms.forEach(room => {
+            const roomID = selectedDate.value + "-" + room.number
+            if(event.target.parentNode.id === roomID) {
+               //invoke post function HERE?
+            }
+        })
+    }
+}
 // ~~~~~~~~~~~~~~~~~~~~Helper Functions~~~~~~~~~~~~~~~~~~~~
 function findRoomsByDate() {
     const roomsFilteredByDate = allBookings.filter(booking => {
@@ -77,25 +88,25 @@ function findRoomsByDate() {
         })
         return acc
     }, [])
-    filteredRoomsByDate = roomsFilteredByDate
+    filteredRooms = roomsFilteredByDate
 }
 function filterRoomsByType() {
     findRoomsByDate()
-    const roomsFilteredByType = filteredRoomsByDate.reduce((acc, room) => {
+    const roomsFilteredByType = filteredRooms.reduce((acc, room) => {
         const selectedRoomReformatted = selectedRoom.value.split("-").join(" ")
         if(room.roomType === selectedRoomReformatted) {
             acc.push(room)
         }
         return acc
     }, [])
-    filteredRoomsByType = roomsFilteredByType
+    filteredRooms = roomsFilteredByType
 }
 
 function displayCardsByType(type) {
-    let array
+    let userBookings
     if (type === "upcoming") {
-        array = currentCustomer.getBookingsByType(allBookings, getCurrentDate(), type)
-        array.forEach(booking => {
+        userBookings = currentCustomer.getBookingsByType(allBookings, getCurrentDate(), type)
+        userBookings.forEach(booking => {
             allRooms.forEach(room => {
                 if(booking.roomNumber === room.number) {
                     upcomingBookings.innerHTML += renderCards(booking, room)
@@ -103,8 +114,8 @@ function displayCardsByType(type) {
             })
         })
     } else {
-            array = currentCustomer.getBookingsByType(allBookings, getCurrentDate(), type)
-            array.forEach(booking => {
+        userBookings = currentCustomer.getBookingsByType(allBookings, getCurrentDate(), type)
+        userBookings.forEach(booking => {
             allRooms.forEach(room => {
                 if(booking.roomNumber === room.number) {
                     pastBookings.innerHTML += renderCards(booking, room)
@@ -112,9 +123,9 @@ function displayCardsByType(type) {
             })
         })
     }  
-    if (type === "upcoming" && !array.length) {
+    if (type === "upcoming" && !userBookings.length) {
         upcomingBookings.innerHTML += `<p class="user-message">You do not have any upcoming reservations with us. Book now!</p>`
-    } else if (type === "past" && !array.length) {
+    } else if (type === "past" && !userBookings.length) {
         pastBookings.innerHTML += `<p class="user-message">You do not have any past reservations with us.</p>`
     }
 }
@@ -131,7 +142,7 @@ function renderCards(booking, room) {
 }
 
 function availableRoomCards(room) {
-    return (`<article class="booking-card">
+    return (`<article class="booking-card" id="${selectedDate.value}-${room.number}">
         <p>Date: ${selectedDate.value}</p>
         <p>Room #${room.number}</p>
         <p>${room.roomType.toUpperCase()}</p>
