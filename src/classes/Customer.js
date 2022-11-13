@@ -6,11 +6,12 @@ class Customer {
     getAllBookings(bookingData) {
         return bookingData.filter(booking => this.id === booking.userID)
     }
-    getPastBookings(bookingData, currDate) {
-        return this.getAllBookings(bookingData).filter(booking => booking.date < currDate)
-    }
-    getUpcomingBookings(bookingData, currDate) {
-        return this.getAllBookings(bookingData).filter(booking => booking.date >= currDate)
+    getBookingsByType(bookingData, currDate, type) {
+        if (type === "past") {
+            return this.getAllBookings(bookingData).filter(booking => booking.date < currDate)
+        } else {
+            return this.getAllBookings(bookingData).filter(booking => booking.date >= currDate)
+        }
     }
     getTotalCost(bookingData, roomData) {
         const costOfAllBookedRooms = this.getAllBookings(bookingData).reduce((totalCost, booking) => {

@@ -36,38 +36,38 @@ function fetchData() {
 function displayCustomerData(currentCustomer, allRooms, allBookings) {
     greeting.innerText = `Welcome, ${currentCustomer.name}!`
     cost.innerHTML = `Your total cost of bookings is $${currentCustomer.getTotalCost(allBookings, allRooms).toFixed(2)}.`
+    displayCardsByType("upcoming")
+    displayCardsByType("past")
+}
 
-    currentCustomer.getUpcomingBookings(allBookings, getCurrentDate()).forEach(booking => {
-        allRooms.forEach(room => {
-            if(booking.roomNumber === room.number) {
-                upcomingBookings.innerHTML += 
-                `<article class="booking-card">
-                    <p>Date: ${booking.date}</p>
-                    <p>Room #${booking.roomNumber}</p>
-                    <p>${room.roomType.toUpperCase()}</p>
-                    <p>${room.numBeds} ${room.bedSize.charAt(0).toUpperCase()}${room.bedSize.slice(1)} Bed(s)</p>
-                    <p>Bidet: ${displayBidetStatus(room)}</p>
-                    <p>$${room.costPerNight}</p>
-                </article>`
-            }
+function displayCardsByType(type) {
+    if (type === "upcoming") {
+        currentCustomer.getBookingsByType(allBookings, getCurrentDate(), type).forEach(booking => {
+            allRooms.forEach(room => {
+                if(booking.roomNumber === room.number) {
+                    upcomingBookings.innerHTML += renderArticle(booking, room)
+                }
+            })
         })
-    })
-
-    currentCustomer.getPastBookings(allBookings, getCurrentDate()).forEach(booking => {
-        allRooms.forEach(room => {
-            if(booking.roomNumber === room.number) {
-                pastBookings.innerHTML += 
-                `<article class="booking-card">
-                    <p>Date: ${booking.date}</p>
-                    <p>Room #${booking.roomNumber}</p>
-                    <p>${room.roomType.toUpperCase()}</p>
-                    <p>${room.numBeds} ${room.bedSize.charAt(0).toUpperCase()}${room.bedSize.slice(1)} Bed(s)</p>
-                    <p>Bidet: ${displayBidetStatus(room)}</p>
-                    <p>$${room.costPerNight}</p>
-                </article>`
-            }
+    } else {
+        currentCustomer.getBookingsByType(allBookings, getCurrentDate(), type).forEach(booking => {
+            allRooms.forEach(room => {
+                if(booking.roomNumber === room.number) {
+                    pastBookings.innerHTML += renderArticle(booking, room)
+                }
+            })
         })
-    })
+    }
+}
+function renderArticle(booking, room) {
+    return (`<article class="booking-card">
+            <p>Date: ${booking.date}</p>
+            <p>Room #${booking.roomNumber}</p>
+            <p>${room.roomType.toUpperCase()}</p>
+            <p>${room.numBeds} ${room.bedSize.charAt(0).toUpperCase()}${room.bedSize.slice(1)} Bed(s)</p>
+            <p>Bidet: ${displayBidetStatus(room)}</p>
+            <p>$${room.costPerNight}</p>
+        </article>`)
 }
 
 function getCurrentDate() {
