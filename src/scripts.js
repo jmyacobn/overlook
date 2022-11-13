@@ -1,10 +1,8 @@
 // ~~~~~~~~~~~~~~~~~~~~Imports~~~~~~~~~~~~~~~~~~~~
 import './css/styles.css'
 import './images/5-stars.png'
-import getData from './apiCalls'
+import {getData, postData} from './apiCalls'
 import Customer from './classes/Customer'
-import Room from './classes/Room'
-import Booking from './classes/Booking'
 
 // ~~~~~~~~~~~~~~~~~~~~Global Variables~~~~~~~~~~~~~~~~~~~~
 let allCustomers
