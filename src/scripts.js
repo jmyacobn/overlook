@@ -3,22 +3,25 @@ import './css/styles.css'
 import './images/5-stars.png'
 import getData from './apiCalls'
 import Customer from './classes/Customer'
-import Room from './classes/Room'
-import Booking from './classes/Booking'
+// import Room from './classes/Room'
+// import Booking from './classes/Booking'
 
 // ~~~~~~~~~~~~~~~~~~~~Global Variables~~~~~~~~~~~~~~~~~~~~
 let allCustomers
 let allRooms
 let allBookings
 let currentCustomer
+let filteredRooms = []
 // ~~~~~~~~~~~~~~~~~~~~Query Selectors~~~~~~~~~~~~~~~~~~~~
 const greeting = document.querySelector('#greeting')
 const cost = document.querySelector('#costSummary')
 const pastBookings = document.querySelector('#pastBookingDisplay')
 const upcomingBookings = document.querySelector('#upcomingBookingDisplay')
+const submitButton = document.querySelector('#submitButton') 
 
 // ~~~~~~~~~~~~~~~~~~~~Event Listeners~~~~~~~~~~~~~~~~~~~~
 window.addEventListener('load', fetchData())
+submitButton.addEventListener('click', displayAvailableRooms())
 
 
 // ~~~~~~~~~~~~~~~~~~~~Functions~~~~~~~~~~~~~~~~~~~~
@@ -40,12 +43,13 @@ function displayCustomerData(currentCustomer, allRooms, allBookings) {
     displayCardsByType("past")
 }
 
+// ~~~~~~~~~~~~~~~~~~~~Helper Functions~~~~~~~~~~~~~~~~~~~~
 function displayCardsByType(type) {
     if (type === "upcoming") {
         currentCustomer.getBookingsByType(allBookings, getCurrentDate(), type).forEach(booking => {
             allRooms.forEach(room => {
                 if(booking.roomNumber === room.number) {
-                    upcomingBookings.innerHTML += renderArticle(booking, room)
+                    upcomingBookings.innerHTML += renderCards(booking, room)
                 }
             })
         })
@@ -53,13 +57,14 @@ function displayCardsByType(type) {
         currentCustomer.getBookingsByType(allBookings, getCurrentDate(), type).forEach(booking => {
             allRooms.forEach(room => {
                 if(booking.roomNumber === room.number) {
-                    pastBookings.innerHTML += renderArticle(booking, room)
+                    pastBookings.innerHTML += renderCards(booking, room)
                 }
             })
         })
     }
 }
-function renderArticle(booking, room) {
+
+function renderCards(booking, room) {
     return (`<article class="booking-card">
             <p>Date: ${booking.date}</p>
             <p>Room #${booking.roomNumber}</p>
