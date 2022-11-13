@@ -32,6 +32,18 @@ describe('Customer', () => {
         expect(customer2.getAllBookings(sampleBookings)).to.deep.equal([sampleBookings[3], sampleBookings[4], sampleBookings[5]])
     })
 
+    it('should have a method to filter customer bookings by past and upcoming', () => {
+        const date = new Date()
+        let day = date.getDate()
+        let month = date.getMonth() + 1
+        let year = date.getFullYear()
+        let currDate = `${year}/${month}/${day}`
+        expect(customer1.getBookingsByType(sampleBookings, currDate, "past")).to.deep.equal([sampleBookings[0], sampleBookings[1], sampleBookings[2]])
+        expect(customer1.getBookingsByType(sampleBookings, currDate, "upcoming")).to.deep.equal([])
+        expect(customer2.getBookingsByType(sampleBookings, currDate, "past")).to.deep.equal([sampleBookings[3], sampleBookings[4]])
+        expect(customer2.getBookingsByType(sampleBookings, currDate, "upcoming")).to.deep.equal([sampleBookings[5]])
+    })
+
     it('should have a method to calculate the total cost of all customer bookings', () => {
         expect(customer1.getTotalCost(sampleBookings, sampleRooms)).to.equal(801.92)
         expect(customer2.getTotalCost(sampleBookings, sampleRooms)).to.equal(1088.55)
