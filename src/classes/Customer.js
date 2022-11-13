@@ -4,10 +4,14 @@ class Customer {
         this.name = customerData.name;
     }
     getAllBookings(bookingData) {
-        const bookedRooms = bookingData.filter(booking => {
-          return this.id === booking.userID
-        })
-        return bookedRooms
+        return bookingData.filter(booking => this.id === booking.userID)
+    }
+    getBookingsByType(bookingData, currDate, type) {
+        if (type === "past") {
+            return this.getAllBookings(bookingData).filter(booking => booking.date < currDate)
+        } else {
+            return this.getAllBookings(bookingData).filter(booking => booking.date >= currDate)
+        }
     }
     getTotalCost(bookingData, roomData) {
         const costOfAllBookedRooms = this.getAllBookings(bookingData).reduce((totalCost, booking) => {
