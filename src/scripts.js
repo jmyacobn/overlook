@@ -47,19 +47,22 @@ function displayCustomerData(currentCustomer, allRooms, allBookings) {
 }
 
 function displayAvailableRooms() {
-    filterRoomsByType()
     availableRooms.innerHTML = ''
     if (selectedDate.value !== "" && selectedRoom.value !== "all-rooms") {
+        filterRoomsByType()
         filteredRooms.forEach(room => {
             availableRooms.innerHTML += availableRoomCards(room)
         })
     } else if (selectedDate.value !== "" && selectedRoom.value === "all-rooms") {
+        findRoomsByDate()
         filteredRooms.forEach(room => {
             availableRooms.innerHTML += availableRoomCards(room)
         })
-    } else if (selectedDate.value !== "" && selectedRoom.value !== "all-rooms" && !filteredRoomsByType.length) {
+    } else if (selectedDate.value !== "" && selectedRoom.value !== "all-rooms" && !filteredRooms.length) {
+        filterRoomsByType()
         availableRooms.innerHTML += `<p class="user-message">We are so sorry. The room type you selected is fully booked on that date. Please select a different room type.</p>`
-    } else if(selectedDate.value !== "" && selectedRoom.value !== "all-rooms" && !filteredRoomsByType.length) {
+    } else if(selectedDate.value !== "" && selectedRoom.value === "all-rooms" && !filteredRooms.length) {
+        findRoomsByDate()
         availableRooms.innerHTML += `<p class="user-message">We are so sorry. We are fully booked on the date you selected. Please select a different check-in date.</p>`
     }
 }
