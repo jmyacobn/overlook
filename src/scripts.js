@@ -64,6 +64,8 @@ function displayAvailableRooms() {
     } else if(selectedDate.value !== "" && selectedRoom.value === "all-rooms" && !filteredRooms.length) {
         findRoomsByDate()
         availableRooms.innerHTML += `<p class="user-message">We are so sorry. We are fully booked on the date you selected. Please select a different check-in date.</p>`
+    } else {
+        availableRooms.innerHTML += `<p class="user-message">You must select a date to see avilable rooms.</p>`
     }
 }
 
@@ -73,6 +75,7 @@ function bookRoom(event) {
         filteredRooms.forEach(room => {
             const roomID = selectedDate.value + "-" + room.number
             if(event.target.parentNode.id === roomID) {
+                console.log("BOO")
                //invoke post function HERE?
             }
         })
