@@ -45,8 +45,10 @@ function displayCustomerData(currentCustomer, allRooms, allBookings) {
 
 // ~~~~~~~~~~~~~~~~~~~~Helper Functions~~~~~~~~~~~~~~~~~~~~
 function displayCardsByType(type) {
+    let array
     if (type === "upcoming") {
-        currentCustomer.getBookingsByType(allBookings, getCurrentDate(), type).forEach(booking => {
+        array = currentCustomer.getBookingsByType(allBookings, getCurrentDate(), type)
+        array.forEach(booking => {
             allRooms.forEach(room => {
                 if(booking.roomNumber === room.number) {
                     upcomingBookings.innerHTML += renderCards(booking, room)
@@ -54,13 +56,19 @@ function displayCardsByType(type) {
             })
         })
     } else {
-        currentCustomer.getBookingsByType(allBookings, getCurrentDate(), type).forEach(booking => {
+            array = currentCustomer.getBookingsByType(allBookings, getCurrentDate(), type)
+            array.forEach(booking => {
             allRooms.forEach(room => {
                 if(booking.roomNumber === room.number) {
                     pastBookings.innerHTML += renderCards(booking, room)
                 }
             })
         })
+    }  
+    if (type === "upcoming" && !array.length) {
+        upcomingBookings.innerHTML += `<p class="user-message">You do not have any upcoming reservations with us. Book now!</p>`
+    } else if (type === "past" && !array.length) {
+        pastBookings.innerHTML += `<p class="user-message">You do not have any past reservations with us.</p>`
     }
 }
 
