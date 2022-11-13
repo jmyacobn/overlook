@@ -89,6 +89,11 @@ button {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
 }
 
+.book-room {
+  margin-left: 2vw;
+  margin-bottom: 2vh;
+}
+
 .user-message {
   color: #6f1d1b;
 }

@@ -3,26 +3,29 @@ import './css/styles.css'
 import './images/5-stars.png'
 import getData from './apiCalls'
 import Customer from './classes/Customer'
-// import Room from './classes/Room'
-// import Booking from './classes/Booking'
+import Room from './classes/Room'
+import Booking from './classes/Booking'
 
 // ~~~~~~~~~~~~~~~~~~~~Global Variables~~~~~~~~~~~~~~~~~~~~
 let allCustomers
 let allRooms
 let allBookings
 let currentCustomer
-let filteredRooms = []
+let filteredRoomsByDate = []
+let filteredRoomsByType = []
 // ~~~~~~~~~~~~~~~~~~~~Query Selectors~~~~~~~~~~~~~~~~~~~~
 const greeting = document.querySelector('#greeting')
 const cost = document.querySelector('#costSummary')
 const pastBookings = document.querySelector('#pastBookingDisplay')
 const upcomingBookings = document.querySelector('#upcomingBookingDisplay')
-const submitButton = document.querySelector('#submitButton') 
+const submitButton = document.querySelector('#submitButton')
+const selectedDate = document.querySelector('#checkInDate') 
+const selectedRoom = document.querySelector('#roomType')
+const availableRooms = document.querySelector('#availableRoomsDisplay')
 
 // ~~~~~~~~~~~~~~~~~~~~Event Listeners~~~~~~~~~~~~~~~~~~~~
-window.addEventListener('load', fetchData())
-submitButton.addEventListener('click', displayAvailableRooms())
-
+window.addEventListener('load', fetchData)
+submitButton.addEventListener('click', displayAvailableRooms)
 
 // ~~~~~~~~~~~~~~~~~~~~Functions~~~~~~~~~~~~~~~~~~~~
 function fetchData() {
@@ -43,7 +46,51 @@ function displayCustomerData(currentCustomer, allRooms, allBookings) {
     displayCardsByType("past")
 }
 
+function displayAvailableRooms() {
+    filterRoomsByType()
+    availableRooms.innerHTML = ''
+    if (selectedDate.value !== "" && selectedRoom.value !== "all-rooms") {
+        filteredRoomsByType.forEach(room => {
+            availableRooms.innerHTML += availableRoomCards(room)
+        })
+    } else if (selectedDate.value !== "" && selectedRoom.value === "all-rooms") {
+        filteredRoomsByDate.forEach(room => {
+            availableRooms.innerHTML += availableRoomCards(room)
+        })
+    } else if (selectedDate.value !== "" && selectedRoom.value !== "all-rooms" && !filteredRoomsByType.length) {
+        availableRooms.innerHTML += `<p class="user-message">We are so sorry. The room type you selected is fully booked on that date. Please select a different room type.</p>`
+    } else if(selectedDate.value !== "" && selectedRoom.value !== "all-rooms" && !filteredRoomsByType.length) {
+        availableRooms.innerHTML += `<p class="user-message">We are so sorry. We are fully booked on the date you selected. Please select a different check-in date.</p>`
+    }
+}
+
 // ~~~~~~~~~~~~~~~~~~~~Helper Functions~~~~~~~~~~~~~~~~~~~~
+function findRoomsByDate() {
+    const roomsFilteredByDate = allBookings.filter(booking => {
+        const selectedDateReformatted = selectedDate.value.split("-").join("/")
+        return (booking.date !== selectedDateReformatted)
+        }).reduce((acc, booking) => {
+        allRooms.forEach(room => {
+            if(room.number === booking.roomNumber && !acc.includes(room)) {
+                acc.push(room)
+            }
+        })
+        return acc
+    }, [])
+    filteredRoomsByDate = roomsFilteredByDate
+}
+function filterRoomsByType() {
+    findRoomsByDate()
+    const roomsFilteredByType = filteredRoomsByDate.reduce((acc, room) => {
+        const selectedRoomReformatted = selectedRoom.value.split("-").join(" ")
+        if(room.roomType === selectedRoomReformatted) {
+            acc.push(room)
+        }
+        return acc
+    }, [])
+    filteredRoomsByType = roomsFilteredByType
+}
+
 function displayCardsByType(type) {
     let array
     if (type === "upcoming") {
@@ -81,6 +128,18 @@ function renderCards(booking, room) {
             <p>Bidet: ${displayBidetStatus(room)}</p>
             <p>$${room.costPerNight}</p>
         </article>`)
+}
+
+function availableRoomCards(room) {
+    return (`<article class="booking-card">
+        <p>Date: ${selectedDate.value}</p>
+        <p>Room #${room.number}</p>
+        <p>${room.roomType.toUpperCase()}</p>
+        <p>${room.numBeds} ${room.bedSize.charAt(0).toUpperCase()}${room.bedSize.slice(1)} Bed(s)</p>
+        <p>Bidet: ${displayBidetStatus(room)}</p>
+        <p>$${room.costPerNight}</p>
+        <button class="book-room" label="book-room" type="button" id="bookRoom">Book Room</button>
+    </article>`)
 }
 
 function getCurrentDate() {
