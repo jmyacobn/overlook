@@ -46,22 +46,14 @@ function displayCustomerData(currentCustomer, allRooms, allBookings) {
 
 function displayAvailableRooms() {
     availableRooms.innerHTML = ''
-    if (selectedDate.value !== "" && selectedRoom.value !== "all-rooms") {
-        filterRoomsByType()
+    filterRoomsByType()
+    if(filteredRooms.length === 0) {
+        console.log("BOO")
+        availableRooms.innerHTML += `<p class="user-message">We are so sorry. There are no available rooms for that search criteria. Please try again.</p>`
+    } else if (selectedDate.value !== "") {
         filteredRooms.forEach(room => {
             availableRooms.innerHTML += availableRoomCards(room)
         })
-    } else if (selectedDate.value !== "" && selectedRoom.value === "all-rooms") {
-        findRoomsByDate()
-        filteredRooms.forEach(room => {
-            availableRooms.innerHTML += availableRoomCards(room)
-        })
-    } else if (selectedDate.value !== "" && selectedRoom.value !== "all-rooms" && !filteredRooms.length) {
-        filterRoomsByType()
-        availableRooms.innerHTML += `<p class="user-message">We are so sorry. The room type you selected is fully booked on that date. Please select a different room type.</p>`
-    } else if(selectedDate.value !== "" && selectedRoom.value === "all-rooms" && !filteredRooms.length) {
-        findRoomsByDate()
-        availableRooms.innerHTML += `<p class="user-message">We are so sorry. We are fully booked on the date you selected. Please select a different check-in date.</p>`
     } else {
         availableRooms.innerHTML += `<p class="user-message">You must select a date to see avilable rooms.</p>`
     }
@@ -102,13 +94,14 @@ function findRoomsByDate() {
 }
 function filterRoomsByType() {
     findRoomsByDate()
-    const roomsFilteredByType = filteredRooms.reduce((acc, room) => {
+    const roomsFilteredByType = filteredRooms.filter(room => {
         const selectedRoomReformatted = selectedRoom.value.split("-").join(" ")
         if(room.roomType === selectedRoomReformatted) {
-            acc.push(room)
+            return room
+        } else if (selectedRoomReformatted === "all rooms") {
+            return room
         }
-        return acc
-    }, [])
+    })
     filteredRooms = roomsFilteredByType
 }
 
