@@ -57,7 +57,7 @@ function displayAvailableRooms() {
     availableRooms.innerHTML = ''
     filterRoomsByType()
     if(filteredRooms.length === 0) {
-        availableRooms.innerHTML += `<p class="user-message">We are so sorry. There are no available rooms for that search criteria. Please try again.</p>`
+        availableRooms.innerHTML += `<p class="user-message">We are so sorry. There are no available rooms for your search criteria. Please try again.</p>`
     } else if (selectedDate.value !== "") {
         filteredRooms.forEach(room => {
             availableRooms.innerHTML += availableRoomCards(room)
