@@ -24,7 +24,16 @@ const availableRooms = document.querySelector('#availableRoomsDisplay')
 window.addEventListener('load', fetchData)
 submitButton.addEventListener('click', displayAvailableRooms)
 availableRooms.addEventListener('click', bookRoom)
-
+selectedDate.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+      displayAvailableRooms()
+    }
+  })
+selectedRoom.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+      displayAvailableRooms()
+    }
+  })
 // ~~~~~~~~~~~~~~~~~~~~Functions~~~~~~~~~~~~~~~~~~~~
 function fetchData() {
     Promise.all([getData('customers'), getData('rooms'), getData('bookings')])
