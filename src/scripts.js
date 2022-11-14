@@ -24,7 +24,16 @@ const availableRooms = document.querySelector('#availableRoomsDisplay')
 window.addEventListener('load', fetchData)
 submitButton.addEventListener('click', displayAvailableRooms)
 availableRooms.addEventListener('click', bookRoom)
-
+selectedDate.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+      displayAvailableRooms()
+    }
+  })
+selectedRoom.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+      displayAvailableRooms()
+    }
+  })
 // ~~~~~~~~~~~~~~~~~~~~Functions~~~~~~~~~~~~~~~~~~~~
 function fetchData() {
     Promise.all([getData('customers'), getData('rooms'), getData('bookings')])
@@ -48,7 +57,6 @@ function displayAvailableRooms() {
     availableRooms.innerHTML = ''
     filterRoomsByType()
     if(filteredRooms.length === 0) {
-        console.log("BOO")
         availableRooms.innerHTML += `<p class="user-message">We are so sorry. There are no available rooms for that search criteria. Please try again.</p>`
     } else if (selectedDate.value !== "") {
         filteredRooms.forEach(room => {
@@ -61,10 +69,8 @@ function displayAvailableRooms() {
 
 function bookRoom(event) {
     if(event.target.classList.contains('book-room')) {
-        console.log(filteredRooms)
         filteredRooms.forEach(room => {
             const roomID = selectedDate.value + "-" + room.number
-            console.log(selectedDate.value.split("-").join("/"))
             if(event.target.parentNode.id === roomID) {
                 const customerBooking = {
                     method: 'POST', 
@@ -146,7 +152,7 @@ function resetCustomerDashboard() {
 }
 
 function renderCards(booking, room) {
-    return (`<article class="booking-card">
+    return (`<article class="booking-card" tabindex="0">
             <p>Date: ${booking.date}</p>
             <p>Room #${booking.roomNumber}</p>
             <p>${room.roomType.toUpperCase()}</p>
@@ -157,14 +163,14 @@ function renderCards(booking, room) {
 }
 
 function availableRoomCards(room) {
-    return (`<article class="booking-card" id="${selectedDate.value}-${room.number}">
+    return (`<article class="booking-card" id="${selectedDate.value}-${room.number}" tabindex="0">
         <p>Date: ${selectedDate.value}</p>
         <p>Room #${room.number}</p>
         <p>${room.roomType.toUpperCase()}</p>
         <p>${room.numBeds} ${room.bedSize.charAt(0).toUpperCase()}${room.bedSize.slice(1)} Bed(s)</p>
         <p>Bidet: ${displayBidetStatus(room)}</p>
         <p>$${room.costPerNight}</p>
-        <button class="book-room" label="book-room" type="button" id="bookRoom">Book Room</button>
+        <button class="book-room" label="book-room" type="button" id="bookRoom" tabindex="0">Book Room</button>
     </article>`)
 }
 
