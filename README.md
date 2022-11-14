@@ -40,7 +40,7 @@ Coming soon!
 Coming soon!
 
 ## Future Features
-- A separate dashboard for hotel staff to manage room bookings and calculate customer bills
+- Add a separate dashboard for hotel management and staff to manage room bookings and calculate customer bills
 - Allow users to rate rooms and leave reviews
 - Messaging tool between customers and hotel staff
 
