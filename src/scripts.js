@@ -57,7 +57,6 @@ function verifyUserLogin() {
 function fetchData(userID) {
     Promise.all([getData(`customers/${userID}`), getData('rooms'), getData('bookings')])
     .then(data => {
-        console.log(data[0])
         allCustomers = data[0]
         allRooms = data[1].rooms
         allBookings = data[2].bookings
