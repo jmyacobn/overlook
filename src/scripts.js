@@ -19,11 +19,17 @@ const submitButton = document.querySelector('#submitButton')
 const selectedDate = document.querySelector('#checkInDate') 
 const selectedRoom = document.querySelector('#roomType')
 const availableRooms = document.querySelector('#availableRoomsDisplay')
+const loginButton = document.querySelector('#loginButton')
+const loginPage = document.querySelector('#loginPage')
+const loginError = document.querySelector('#loginError')
+const header = document.querySelector('header')
+const main = document.querySelector('main')
 
 // ~~~~~~~~~~~~~~~~~~~~Event Listeners~~~~~~~~~~~~~~~~~~~~
-window.addEventListener('load', fetchData)
+// window.addEventListener('load', fetchData)
 submitButton.addEventListener('click', displayAvailableRooms)
 availableRooms.addEventListener('click', bookRoom)
+loginButton.addEventListener('click', verifyUserLogin)
 selectedDate.addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
       displayAvailableRooms()
@@ -35,6 +41,19 @@ selectedRoom.addEventListener('keypress', (event) => {
     }
   })
 // ~~~~~~~~~~~~~~~~~~~~Functions~~~~~~~~~~~~~~~~~~~~
+function verifyUserLogin() {
+    const userID = Number(username.value.slice(8))
+    if(username.value.slice(0, 8) === 'customer' && userID > 0 && userID <= 50 && password.value === 'overlook2021') {
+        fetchData()
+    } else if (username.value === "" || password.value === "" ) {
+        loginError.innerText = `Please enter valid username and password.`
+    } else if (password.value !== 'overlook2021') {
+        loginError.innerText = `The password you entered is incorrect. Please try again.`
+    } else if (username.value.slice(0, 8) !== 'customer' && !userID > 0 && !userID <= 50) {
+        loginError.innerText = `The username you entered is incorrect. Please try again`
+    }
+}
+
 function fetchData() {
     Promise.all([getData('customers'), getData('rooms'), getData('bookings')])
     .then(data => {
@@ -47,6 +66,9 @@ function fetchData() {
 }
 
 function displayCustomerData(currentCustomer, allRooms, allBookings) {
+    loginPage.classList.add("hidden")
+    header.classList.remove("hidden")
+    main.classList.remove("hidden")
     greeting.innerText = `Welcome, ${currentCustomer.name}!`
     cost.innerHTML = `Your total cost of bookings is $${currentCustomer.getTotalCost(allBookings, allRooms).toFixed(2)}.`
     displayCardsByType("upcoming")
