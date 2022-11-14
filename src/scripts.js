@@ -10,6 +10,7 @@ let allRooms
 let allBookings
 let currentCustomer
 let filteredRooms = []
+
 // ~~~~~~~~~~~~~~~~~~~~Query Selectors~~~~~~~~~~~~~~~~~~~~
 const greeting = document.querySelector('#greeting')
 const cost = document.querySelector('#costSummary')
@@ -26,7 +27,6 @@ const header = document.querySelector('header')
 const main = document.querySelector('main')
 
 // ~~~~~~~~~~~~~~~~~~~~Event Listeners~~~~~~~~~~~~~~~~~~~~
-// window.addEventListener('load', fetchData)
 submitButton.addEventListener('click', displayAvailableRooms)
 availableRooms.addEventListener('click', bookRoom)
 loginButton.addEventListener('click', verifyUserLogin)
@@ -40,17 +40,16 @@ selectedRoom.addEventListener('keypress', (event) => {
       displayAvailableRooms()
     }
   })
+
 // ~~~~~~~~~~~~~~~~~~~~Functions~~~~~~~~~~~~~~~~~~~~
 function verifyUserLogin() {
     const userID = Number(username.value.slice(8))
     if(username.value.slice(0, 8) === 'customer' && userID > 0 && userID <= 50 && password.value === 'overlook2021') {
         fetchData()
     } else if (username.value === "" || password.value === "" ) {
+        loginError.innerText = `You must enter both a username and password.`
+    } else if (password.value !== 'overlook2021' || (username.value.slice(0, 8) !== 'customer' && !userID > 0 && !userID <= 50)) {
         loginError.innerText = `Please enter valid username and password.`
-    } else if (password.value !== 'overlook2021') {
-        loginError.innerText = `The password you entered is incorrect. Please try again.`
-    } else if (username.value.slice(0, 8) !== 'customer' && !userID > 0 && !userID <= 50) {
-        loginError.innerText = `The username you entered is incorrect. Please try again`
     }
 }
 
@@ -112,6 +111,7 @@ function bookRoom(event) {
         })
     }
 }
+
 // ~~~~~~~~~~~~~~~~~~~~Helper Functions~~~~~~~~~~~~~~~~~~~~
 function findRoomsByDate() {
     const roomsFilteredByDate = allBookings.filter(booking => {
