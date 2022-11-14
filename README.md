@@ -22,7 +22,7 @@ Link to deployed site coming soon!
 Overlook Hotel was my final capstone project for Module 2 at Turing School of Software Development and Design after being a software developer for only 12 weeks. We were given a full week to complete this project while balancing classes, professional development, other assignments, and our final assessment. The spec for this project can be found [here](https://frontend.turing.edu/projects/overlook.html).
 
 ## Contributors
-- Jennifer Yacoubian [GitHub](https://github.com/jmyacobn) | [LinkedIn](https://www.linkedin.com/in/jennifer-yacoubian/)
+Jennifer Yacoubian [GitHub](https://github.com/jmyacobn) | [LinkedIn](https://www.linkedin.com/in/jennifer-yacoubian/)
 
 ## Learning Goals 🎯
 - Use OOP to drive the design of the application and the code
