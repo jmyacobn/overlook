@@ -9,7 +9,6 @@ const getData = (dataSource) => {
 }
 
 const postData = (newBooking) => {
-    console.log("Boo")
     return fetch('http://localhost:3001/api/v1/bookings', newBooking)
         .then(response => {
             if(!response.ok) {

@@ -10,6 +10,8 @@ let allRooms
 let allBookings
 let currentCustomer
 let filteredRooms = []
+let userID
+
 // ~~~~~~~~~~~~~~~~~~~~Query Selectors~~~~~~~~~~~~~~~~~~~~
 const greeting = document.querySelector('#greeting')
 const cost = document.querySelector('#costSummary')
@@ -19,11 +21,16 @@ const submitButton = document.querySelector('#submitButton')
 const selectedDate = document.querySelector('#checkInDate') 
 const selectedRoom = document.querySelector('#roomType')
 const availableRooms = document.querySelector('#availableRoomsDisplay')
+const loginButton = document.querySelector('#loginButton')
+const loginPage = document.querySelector('#loginPage')
+const loginError = document.querySelector('#loginError')
+const header = document.querySelector('header')
+const main = document.querySelector('main')
 
 // ~~~~~~~~~~~~~~~~~~~~Event Listeners~~~~~~~~~~~~~~~~~~~~
-window.addEventListener('load', fetchData)
 submitButton.addEventListener('click', displayAvailableRooms)
 availableRooms.addEventListener('click', bookRoom)
+loginButton.addEventListener('click', verifyUserLogin)
 selectedDate.addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
       displayAvailableRooms()
@@ -34,19 +41,35 @@ selectedRoom.addEventListener('keypress', (event) => {
       displayAvailableRooms()
     }
   })
+
 // ~~~~~~~~~~~~~~~~~~~~Functions~~~~~~~~~~~~~~~~~~~~
-function fetchData() {
-    Promise.all([getData('customers'), getData('rooms'), getData('bookings')])
+function verifyUserLogin() {
+    userID = Number(username.value.slice(8))
+    if(username.value.slice(0, 8) === 'customer' && userID > 0 && userID <= 50 && password.value === 'overlook2021') {
+        fetchData(userID)
+    } else if (username.value === "" || password.value === "" ) {
+        loginError.innerText = `You must enter both a username and password.`
+    } else if (password.value !== 'overlook2021' || (username.value.slice(0, 8) !== 'customer' && !userID > 0 && !userID <= 50)) {
+        loginError.innerText = `Please enter valid username and password.`
+    }
+}
+
+function fetchData(userID) {
+    Promise.all([getData(`customers/${userID}`), getData('rooms'), getData('bookings')])
     .then(data => {
-        allCustomers = data[0].customers
+        console.log(data[0])
+        allCustomers = data[0]
         allRooms = data[1].rooms
         allBookings = data[2].bookings
-        currentCustomer = new Customer(allCustomers[0])
+        currentCustomer = new Customer(allCustomers)
         displayCustomerData(currentCustomer, allRooms, allBookings)
     })
 }
 
 function displayCustomerData(currentCustomer, allRooms, allBookings) {
+    loginPage.classList.add("hidden")
+    header.classList.remove("hidden")
+    main.classList.remove("hidden")
     greeting.innerText = `Welcome, ${currentCustomer.name}!`
     cost.innerHTML = `Your total cost of bookings is $${currentCustomer.getTotalCost(allBookings, allRooms).toFixed(2)}.`
     displayCardsByType("upcoming")
@@ -57,7 +80,7 @@ function displayAvailableRooms() {
     availableRooms.innerHTML = ''
     filterRoomsByType()
     if(filteredRooms.length === 0) {
-        availableRooms.innerHTML += `<p class="user-message">We are so sorry. There are no available rooms for that search criteria. Please try again.</p>`
+        availableRooms.innerHTML += `<p class="user-message">We are so sorry. There are no available rooms for your search criteria. Please try again.</p>`
     } else if (selectedDate.value !== "") {
         filteredRooms.forEach(room => {
             availableRooms.innerHTML += availableRoomCards(room)
@@ -83,13 +106,14 @@ function bookRoom(event) {
                         availableRooms.innerHTML = `<p class="user-message">BOOKING CONFIRMED!</p>`
                         setTimeout(() => {
                             resetCustomerDashboard()
-                            fetchData()
+                            fetchData(userID)
                         }, 3000)
                         })
             }
         })
     }
 }
+
 // ~~~~~~~~~~~~~~~~~~~~Helper Functions~~~~~~~~~~~~~~~~~~~~
 function findRoomsByDate() {
     const roomsFilteredByDate = allBookings.filter(booking => {
@@ -153,25 +177,25 @@ function resetCustomerDashboard() {
 
 function renderCards(booking, room) {
     return (`<article class="booking-card" tabindex="0">
-            <p>Date: ${booking.date}</p>
-            <p>Room #${booking.roomNumber}</p>
-            <p>${room.roomType.toUpperCase()}</p>
-            <p>${room.numBeds} ${room.bedSize.charAt(0).toUpperCase()}${room.bedSize.slice(1)} Bed(s)</p>
-            <p>Bidet: ${displayBidetStatus(room)}</p>
-            <p>$${room.costPerNight}</p>
-        </article>`)
+                <p>Date: ${booking.date}</p>
+                <p>Room #${booking.roomNumber}</p>
+                <p>${room.roomType.toUpperCase()}</p>
+                <p>${room.numBeds} ${room.bedSize.charAt(0).toUpperCase()}${room.bedSize.slice(1)} Bed(s)</p>
+                <p>Bidet: ${displayBidetStatus(room)}</p>
+                <p>$${room.costPerNight}</p>
+            </article>`)
 }
 
 function availableRoomCards(room) {
     return (`<article class="booking-card" id="${selectedDate.value}-${room.number}" tabindex="0">
-        <p>Date: ${selectedDate.value}</p>
-        <p>Room #${room.number}</p>
-        <p>${room.roomType.toUpperCase()}</p>
-        <p>${room.numBeds} ${room.bedSize.charAt(0).toUpperCase()}${room.bedSize.slice(1)} Bed(s)</p>
-        <p>Bidet: ${displayBidetStatus(room)}</p>
-        <p>$${room.costPerNight}</p>
-        <button class="book-room" label="book-room" type="button" id="bookRoom" tabindex="0">Book Room</button>
-    </article>`)
+                <p>Date: ${selectedDate.value}</p>
+                <p>Room #${room.number}</p>
+                <p>${room.roomType.toUpperCase()}</p>
+                <p>${room.numBeds} ${room.bedSize.charAt(0).toUpperCase()}${room.bedSize.slice(1)} Bed(s)</p>
+                <p>Bidet: ${displayBidetStatus(room)}</p>
+                <p>$${room.costPerNight}</p>
+                <button class="book-room" label="book-room" type="button" id="bookRoom" tabindex="0">Book Room</button>
+            </article>`)
 }
 
 function getCurrentDate() {

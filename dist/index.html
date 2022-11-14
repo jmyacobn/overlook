@@ -7,7 +7,24 @@
   <title>Overlook Hotel</title>
 </head>
 <body>
-  <header>
+  <section class="login-page" id="loginPage">
+    <img class="login-image" src="./images/5-stars.png" alt="five stars above a hotel">
+    <h1>Welcome to Overlook Hotel!</h1> 
+    <p>Sign in below with your username and password to view your past and upcoming reservations or to book a stay with us!</p>
+    <form class="login-form">
+      <div class="user-input">
+        <label for="username">Username: </label>
+        <input name="username" id="username" class="login" placeholder="Username" type="string" required />
+      </div>
+      <div>
+        <label for="password">Password: </label>
+        <input name="password" id="password" class="login" placeholder="Password" type="password" required />
+      </div>
+      <button class="login-button" label="login-button" type="button" id="loginButton">Login</button>
+    </form>
+    <p class="user-message" id="loginError"></p>
+  </section>
+  <header class="hidden">
     <div class="user-info">
       <h2 class="greeting" id="greeting">Welcome, User!</h2>
       <p id="costSummary">Your total cost of bookings is $XX.</p>
@@ -17,7 +34,7 @@
       <h1 class="title">Overlook Hotel</h1>
     </div>
   </header>
-  <main>
+  <main class="hidden">
     <section class="request-booking-section">
       <h2>Book A Room</h2>
       <form class="request-room">

@@ -7,6 +7,34 @@ body {
   flex-direction: column;
 }
 
+.login-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #0d3b66;
+}
+
+.login-image {
+  height: 10%;
+  width: 10%;
+  margin-top: 10vh;
+}
+
+.login-form {
+  display:flex;
+  flex-direction: column;
+  height: 20vh;
+  font-size: 1.5em;
+}
+
+.login-button {
+  font-size: 0.8em;
+  height: 4vh;
+  width: 10vw;
+  margin-top: 2vh;
+  margin-left: 5vw;
+}
+
 header {
   background-color: #0d3b66;
   color: #f4d35e;
@@ -102,4 +130,8 @@ button {
 
 .user-message {
   color: #6f1d1b;
+}
+
+.hidden {
+  display: none;
 }
