@@ -52,13 +52,19 @@ main {
   color: #0d3b66;
 }
 
+.required-message {
+  color:#6f1d1b;
+  font-size: 0.8em;
+  margin: 0;
+}
+
 form {
   display: flex;
   flex-direction: column;
   margin-left: 2vw;
   font-size: 1.25em;
   width: fit-content;
-  height: 23vh;
+  height: 30vh;
   justify-content: space-evenly;
 }
 
