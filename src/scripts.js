@@ -32,7 +32,7 @@ function fetchData() {
         allCustomers = data[0].customers
         allRooms = data[1].rooms
         allBookings = data[2].bookings
-        currentCustomer = new Customer(allCustomers[Math.floor(Math.random() * allCustomers.length)])
+        currentCustomer = new Customer(allCustomers[0])
         displayCustomerData(currentCustomer, allRooms, allBookings)
     })
 }
@@ -72,9 +72,16 @@ function bookRoom(event) {
         console.log(filteredRooms)
         filteredRooms.forEach(room => {
             const roomID = selectedDate.value + "-" + room.number
+            console.log(selectedDate.value.split("-").join("/"))
             if(event.target.parentNode.id === roomID) {
-                console.log("BOO")
-               //invoke post function HERE?
+                const customerBooking = {
+                    method: 'POST', 
+                    headers: {'Content-Type': 'application/json'},
+                    body:JSON.stringify({"userID": currentCustomer.id, "date": selectedDate.value.split("-").join("/"), "roomNumber": room.number})
+                }
+                postData(customerBooking)
+                    .then((response) => response)
+                    .then(() => fetchData())
             }
         })
     }
@@ -83,16 +90,15 @@ function bookRoom(event) {
 function findRoomsByDate() {
     const roomsFilteredByDate = allBookings.filter(booking => {
         const selectedDateReformatted = selectedDate.value.split("-").join("/")
-        return (booking.date !== selectedDateReformatted)
-        }).reduce((acc, booking) => {
-        allRooms.forEach(room => {
-            if(room.number === booking.roomNumber && !acc.includes(room)) {
+        return (booking.date === selectedDateReformatted)
+        }).map(bookedRoom => bookedRoom.roomNumber)
+        const stuff = allRooms.reduce((acc, room) => {
+            if(!roomsFilteredByDate.includes(room.number)) {
                 acc.push(room)
             }
-        })
-        return acc
-    }, [])
-    filteredRooms = roomsFilteredByDate
+            return acc
+        }, [])
+        filteredRooms = stuff
 }
 function filterRoomsByType() {
     findRoomsByDate()
