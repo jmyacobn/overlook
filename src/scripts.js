@@ -73,7 +73,13 @@ function bookRoom(event) {
                 }
                 postData(customerBooking)
                     .then((response) => response)
-                    .then(() => fetchData())
+                    .then(() => {
+                        availableRooms.innerHTML = `<p class="user-message">BOOKING CONFIRMED!</p>`
+                        setTimeout(() => {
+                            resetCustomerDashboard()
+                            fetchData()
+                        }, 3000)
+                        })
             }
         })
     }
@@ -131,6 +137,12 @@ function displayCardsByType(type) {
     } else if (type === "past" && !userBookings.length) {
         pastBookings.innerHTML += `<p class="user-message">You do not have any past reservations with us.</p>`
     }
+}
+
+function resetCustomerDashboard() {
+    selectedDate.value = ''
+    selectedRoom.value = 'all-rooms'
+    availableRooms.innerHTML = `<p class="user-message">Select a date and room type to search available rooms.</p>`
 }
 
 function renderCards(booking, room) {
