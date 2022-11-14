@@ -644,7 +644,6 @@ function verifyUserLogin() {
 function fetchData(userID) {
     Promise.all([(0,_apiCalls__WEBPACK_IMPORTED_MODULE_2__.getData)(`customers/${userID}`), (0,_apiCalls__WEBPACK_IMPORTED_MODULE_2__.getData)('rooms'), (0,_apiCalls__WEBPACK_IMPORTED_MODULE_2__.getData)('bookings')])
     .then(data => {
-        console.log(data[0])
         allCustomers = data[0]
         allRooms = data[1].rooms
         allBookings = data[2].bookings
