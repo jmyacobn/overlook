@@ -48,7 +48,6 @@ function displayAvailableRooms() {
     availableRooms.innerHTML = ''
     filterRoomsByType()
     if(filteredRooms.length === 0) {
-        console.log("BOO")
         availableRooms.innerHTML += `<p class="user-message">We are so sorry. There are no available rooms for that search criteria. Please try again.</p>`
     } else if (selectedDate.value !== "") {
         filteredRooms.forEach(room => {
@@ -61,10 +60,8 @@ function displayAvailableRooms() {
 
 function bookRoom(event) {
     if(event.target.classList.contains('book-room')) {
-        console.log(filteredRooms)
         filteredRooms.forEach(room => {
             const roomID = selectedDate.value + "-" + room.number
-            console.log(selectedDate.value.split("-").join("/"))
             if(event.target.parentNode.id === roomID) {
                 const customerBooking = {
                     method: 'POST', 
