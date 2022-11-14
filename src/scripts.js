@@ -143,7 +143,7 @@ function resetCustomerDashboard() {
 }
 
 function renderCards(booking, room) {
-    return (`<article class="booking-card">
+    return (`<article class="booking-card" tabindex="0">
             <p>Date: ${booking.date}</p>
             <p>Room #${booking.roomNumber}</p>
             <p>${room.roomType.toUpperCase()}</p>
@@ -154,14 +154,14 @@ function renderCards(booking, room) {
 }
 
 function availableRoomCards(room) {
-    return (`<article class="booking-card" id="${selectedDate.value}-${room.number}">
+    return (`<article class="booking-card" id="${selectedDate.value}-${room.number}" tabindex="0">
         <p>Date: ${selectedDate.value}</p>
         <p>Room #${room.number}</p>
         <p>${room.roomType.toUpperCase()}</p>
         <p>${room.numBeds} ${room.bedSize.charAt(0).toUpperCase()}${room.bedSize.slice(1)} Bed(s)</p>
         <p>Bidet: ${displayBidetStatus(room)}</p>
         <p>$${room.costPerNight}</p>
-        <button class="book-room" label="book-room" type="button" id="bookRoom">Book Room</button>
+        <button class="book-room" label="book-room" type="button" id="bookRoom" tabindex="0">Book Room</button>
     </article>`)
 }
 
