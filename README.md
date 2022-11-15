@@ -2,7 +2,7 @@
 
 ## Abstract
 
-Overlook Hotel is a hotel management application that allows hotel customers to view their past and upcoming bookings, track the total cost of all bookings, and book a future reservation. This app was built using HTML, CSS, JavaScript, and local APIs. Users are only able to access their account information after logging in with their unique username and password.
+Overlook Hotel is a hotel management application that allows hotel customers to view their past and upcoming bookings, track the total cost of all bookings, and book a future reservation. This app was built using HTML, CSS, JavaScript, and local API. Users are only able to access their account information after logging in with their unique username and password.
 
 ## Preview of Application
 
