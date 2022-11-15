@@ -22,16 +22,25 @@ describe('Customer', () => {
   it('should have property of id', () => {
     expect(customer1.id).to.equal(1)
     expect(customer2.id).to.equal(2)
+    expect(customer3.id).to.equal(4)
+    expect(customer4.id).to.equal(5)
   })
 
   it('should have property of name', () => {
     expect(customer1.name).to.equal('Leatha Ullrich')
     expect(customer2.name).to.equal('Rocio Schuster')
+    expect(customer3.name).to.equal('Kennedi Emard')
+    expect(customer4.name).to.equal('Rhiannon Little')
   })
 
   it('should have method to get all customer bookings', () => {
     expect(customer1.getAllBookings(sampleBookings)).to.deep.equal([sampleBookings[0], sampleBookings[1], sampleBookings[2]])
     expect(customer2.getAllBookings(sampleBookings)).to.deep.equal([sampleBookings[3], sampleBookings[4], sampleBookings[5]])
+  })
+
+  it('should not have bookings if customer has no previous reservations', () => {
+    expect(customer3.getAllBookings(sampleBookings)).to.deep.equal([])
+    expect(customer4.getAllBookings(sampleBookings)).to.deep.equal([])
   })
 
   it('should have a method to filter customer bookings by past and upcoming', () => {
