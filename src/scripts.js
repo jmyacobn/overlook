@@ -74,9 +74,8 @@ function fetchData(userID) {
 }
 
 function displayCustomerData(currentCustomer, allRooms, allBookings) {
-  loginPage.classList.add("hidden")
-  header.classList.remove("hidden")
-  main.classList.remove("hidden")
+  hide([loginPage])
+  show([header, main])
   greeting.innerText = `Welcome, ${currentCustomer.name}!`
   cost.innerHTML = `Your total cost of bookings is $${currentCustomer.getTotalCost(allBookings, allRooms).toFixed(2)}.`
   selectedDate.min = new Date().toLocaleDateString('en-ca')
@@ -124,7 +123,6 @@ function bookRoom(event) {
 // ~~~~~~~~~~~~~~~~~~~~Helper Functions~~~~~~~~~~~~~~~~~~~~
 function findRoomsByDate() {
   const roomsFilteredByDate = allBookings.filter(booking => {
-    selectedDateReformatted = selectedDate.value.split("-").join("/")
     return (booking.date === selectedDateReformatted)
   }).map(bookedRoom => bookedRoom.roomNumber)
   const roomsByDate = allRooms.reduce((acc, room) => {
@@ -216,12 +214,25 @@ function getCurrentDate() {
 
 function checkDate() {
   getCurrentDate()
-  if(selectedDate.value >= currDate.split("/").join("-")) {
+  selectedDateReformatted = selectedDate.value.split("-").join("/")
+  if(selectedDateReformatted >= currDate) {
     filterRoomsByType()
-  } else if(selectedDate.value !== "" && selectedDate.value < currDate.split("/").join("-")) {
+  } else if(selectedDate.value !== "" && selectedDateReformatted < currDate) {
     availableRooms.innerHTML = ''
     availableRooms.innerHTML = `<p class="user-message">The date you selected has passed. Please choose another date.</p>`
   }
+}
+
+function hide(elem) {
+  elem.forEach((currElem) => {
+      currElem.classList.add('hidden')
+  })
+}
+
+function show(elem) {
+  elem.forEach((currElem) => {
+      currElem.classList.remove('hidden')
+  })
 }
 
 function displayBidetStatus(room) {
