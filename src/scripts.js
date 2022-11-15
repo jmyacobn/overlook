@@ -12,6 +12,7 @@ let currentCustomer
 let filteredRooms = []
 let userID
 let currDate
+let selectedDateReformatted
 
 // ~~~~~~~~~~~~~~~~~~~~Query Selectors~~~~~~~~~~~~~~~~~~~~
 const greeting = document.querySelector('#greeting')
@@ -86,9 +87,9 @@ function displayCustomerData(currentCustomer, allRooms, allBookings) {
 function displayAvailableRooms() {
   availableRooms.innerHTML = ''
   checkDate()
-  if (filteredRooms.length === 0 && selectedDate.value >= currDate.split("/").join("-")) {
+  if (filteredRooms.length === 0 && selectedDateReformatted >= currDate) {
     availableRooms.innerHTML += `<p class="user-message">We are so sorry. There are no available rooms for your search criteria. Please try again.</p>`
-  } else if (selectedDate.value !== "" && selectedDate.value >= currDate.split("/").join("-")) {
+  } else if (selectedDate.value !== "" && selectedDateReformatted >= currDate) {
     filteredRooms.forEach(room => {
       availableRooms.innerHTML += availableRoomCards(room)
     })
@@ -124,7 +125,7 @@ function bookRoom(event) {
 // ~~~~~~~~~~~~~~~~~~~~Helper Functions~~~~~~~~~~~~~~~~~~~~
 function findRoomsByDate() {
   const roomsFilteredByDate = allBookings.filter(booking => {
-    const selectedDateReformatted = selectedDate.value.split("-").join("/")
+    selectedDateReformatted = selectedDate.value.split("-").join("/")
     return (booking.date === selectedDateReformatted)
   }).map(bookedRoom => bookedRoom.roomNumber)
   const roomsByDate = allRooms.reduce((acc, room) => {
