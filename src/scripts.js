@@ -126,13 +126,13 @@ function findRoomsByDate() {
     const selectedDateReformatted = selectedDate.value.split("-").join("/")
     return (booking.date === selectedDateReformatted)
   }).map(bookedRoom => bookedRoom.roomNumber)
-  const stuff = allRooms.reduce((acc, room) => {
+  const roomsByDate = allRooms.reduce((acc, room) => {
     if (!roomsFilteredByDate.includes(room.number)) {
       acc.push(room)
     }
     return acc
   }, [])
-  filteredRooms = stuff
+  filteredRooms = roomsByDate
 }
 function filterRoomsByType() {
   findRoomsByDate()
