@@ -26,6 +26,7 @@ const loginPage = document.querySelector('#loginPage')
 const loginError = document.querySelector('#loginError')
 const header = document.querySelector('header')
 const main = document.querySelector('main')
+const password =document.querySelector('#password')
 
 // ~~~~~~~~~~~~~~~~~~~~Event Listeners~~~~~~~~~~~~~~~~~~~~
 submitButton.addEventListener('click', displayAvailableRooms)
@@ -39,6 +40,11 @@ selectedDate.addEventListener('keypress', (event) => {
 selectedRoom.addEventListener('keypress', (event) => {
   if (event.key === 'Enter') {
     displayAvailableRooms()
+  }
+})
+password.addEventListener('keypress', (event) => {
+  if (event.key === 'Enter') {
+    verifyUserLogin()
   }
 })
 
@@ -71,6 +77,7 @@ function displayCustomerData(currentCustomer, allRooms, allBookings) {
   main.classList.remove("hidden")
   greeting.innerText = `Welcome, ${currentCustomer.name}!`
   cost.innerHTML = `Your total cost of bookings is $${currentCustomer.getTotalCost(allBookings, allRooms).toFixed(2)}.`
+  selectedDate.min = new Date().toLocaleDateString('en-ca')
   displayCardsByType("upcoming")
   displayCardsByType("past")
 }
