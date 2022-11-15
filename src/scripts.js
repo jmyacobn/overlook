@@ -11,6 +11,7 @@ let allBookings
 let currentCustomer
 let filteredRooms = []
 let userID
+let currDate
 
 // ~~~~~~~~~~~~~~~~~~~~Query Selectors~~~~~~~~~~~~~~~~~~~~
 const greeting = document.querySelector('#greeting')
@@ -84,15 +85,21 @@ function displayCustomerData(currentCustomer, allRooms, allBookings) {
 
 function displayAvailableRooms() {
   availableRooms.innerHTML = ''
-  filterRoomsByType()
-  if (filteredRooms.length === 0) {
-    availableRooms.innerHTML += `<p class="user-message">We are so sorry. There are no available rooms for your search criteria. Please try again.</p>`
-  } else if (selectedDate.value !== "") {
-    filteredRooms.forEach(room => {
-      availableRooms.innerHTML += availableRoomCards(room)
-    })
+  getCurrentDate()
+  if(selectedDate.value >= currDate.split("/").join("-")) {
+    filterRoomsByType()
+    if (filteredRooms.length === 0) {
+      availableRooms.innerHTML += `<p class="user-message">We are so sorry. There are no available rooms for your search criteria. Please try again.</p>`
+    } else if (selectedDate.value !== "") {
+      filteredRooms.forEach(room => {
+        availableRooms.innerHTML += availableRoomCards(room)
+      })
+    } else {
+      availableRooms.innerHTML += `<p class="user-message">You must select a date to see avilable rooms.</p>`
+    }
   } else {
-    availableRooms.innerHTML += `<p class="user-message">You must select a date to see avilable rooms.</p>`
+    availableRooms.innerHTML = ''
+    availableRooms.innerHTML = `<p class="user-message">The date you selected has passed. Please choose another date.</p>`
   }
 }
 
@@ -209,7 +216,7 @@ function getCurrentDate() {
   let day = date.getDate()
   let month = date.getMonth() + 1
   let year = date.getFullYear()
-  let currDate = `${year}/${month}/${day}`
+  currDate = `${year}/${month}/${day}`
   return currDate
 }
 
