@@ -6,11 +6,13 @@ describe('Customer', () => {
   sampleCustomers
   sampleRooms
   sampleBookings
-  let customer1, customer2
+  let customer1, customer2, customer3, customer4
 
   beforeEach(() => {
     customer1 = new Customer(sampleCustomers[0])
     customer2 = new Customer(sampleCustomers[1])
+    customer3 = new Customer(sampleCustomers[3])
+    customer4 = new Customer(sampleCustomers[4])
   })
 
   it('should be a function', () => {
@@ -44,8 +46,25 @@ describe('Customer', () => {
     expect(customer2.getBookingsByType(sampleBookings, currDate, "upcoming")).to.deep.equal([sampleBookings[5]])
   })
 
+  it('should return empty array if customer has no past or upcoming bookings', () => {
+    const date = new Date()
+    let day = date.getDate()
+    let month = date.getMonth() + 1
+    let year = date.getFullYear()
+    let currDate = `${year}/${month}/${day}`
+    expect(customer3.getBookingsByType(sampleBookings, currDate, "past")).to.deep.equal([])
+    expect(customer3.getBookingsByType(sampleBookings, currDate, "upcoming")).to.deep.equal([])
+    expect(customer4.getBookingsByType(sampleBookings, currDate, "past")).to.deep.equal([])
+    expect(customer4.getBookingsByType(sampleBookings, currDate, "upcoming")).to.deep.equal([])
+  })
+
   it('should have a method to calculate the total cost of all customer bookings', () => {
     expect(customer1.getTotalCost(sampleBookings, sampleRooms)).to.equal(801.92)
     expect(customer2.getTotalCost(sampleBookings, sampleRooms)).to.equal(1088.55)
+  })
+
+  it('should return no cost if customer does not have any bookings yet', () => {
+    expect(customer3.getTotalCost(sampleBookings, sampleRooms)).to.equal(0)
+    expect(customer4.getTotalCost(sampleBookings, sampleRooms)).to.equal(0)
   })
 })
