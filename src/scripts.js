@@ -106,7 +106,7 @@ function bookRoom(event) {
         const customerBooking = {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ "userID": currentCustomer.id, "date": selectedDate.value.split("-").join("/"), "roomNumber": room.number })
+          body: JSON.stringify({ "userID": currentCustomer.id, "date": selectedDateReformatted, "roomNumber": room.number })
         }
         postData(customerBooking)
           .then((response) => response)
