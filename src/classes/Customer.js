@@ -7,7 +7,7 @@ class Customer {
     return bookingData.filter(booking => this.id === booking.userID)
   }
   getBookingsByType(bookingData, currDate, type) {
-    if (type === "past") {
+    if (type === 'past') {
       return this.getAllBookings(bookingData).filter(booking => booking.date < currDate)
     } else {
       return this.getAllBookings(bookingData).filter(booking => booking.date >= currDate)
