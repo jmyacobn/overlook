@@ -85,9 +85,7 @@ function displayCustomerData(currentCustomer, allRooms, allBookings) {
 
 function displayAvailableRooms() {
   availableRooms.innerHTML = ''
-  getCurrentDate()
-  if(selectedDate.value >= currDate.split("/").join("-")) {
-    filterRoomsByType()
+  checkDate()
     if (filteredRooms.length === 0) {
       availableRooms.innerHTML += `<p class="user-message">We are so sorry. There are no available rooms for your search criteria. Please try again.</p>`
     } else if (selectedDate.value !== "") {
@@ -97,10 +95,6 @@ function displayAvailableRooms() {
     } else {
       availableRooms.innerHTML += `<p class="user-message">You must select a date to see avilable rooms.</p>`
     }
-  } else {
-    availableRooms.innerHTML = ''
-    availableRooms.innerHTML = `<p class="user-message">The date you selected has passed. Please choose another date.</p>`
-  }
 }
 
 function bookRoom(event) {
@@ -218,6 +212,16 @@ function getCurrentDate() {
   let year = date.getFullYear()
   currDate = `${year}/${month}/${day}`
   return currDate
+}
+
+function checkDate() {
+  getCurrentDate()
+  if(selectedDate.value >= currDate.split("/").join("-")) {
+    filterRoomsByType()
+  } else {
+    availableRooms.innerHTML = ''
+    availableRooms.innerHTML = `<p class="user-message">The date you selected has passed. Please choose another date.</p>`
+  }
 }
 
 function displayBidetStatus(room) {
