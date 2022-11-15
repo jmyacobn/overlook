@@ -6,13 +6,18 @@ describe('Customer', () => {
   sampleCustomers
   sampleRooms
   sampleBookings
-  let customer1, customer2, customer3, customer4
+  let customer1, customer2, customer3, customer4, date, day, month, year, currDate
 
   beforeEach(() => {
     customer1 = new Customer(sampleCustomers[0])
     customer2 = new Customer(sampleCustomers[1])
     customer3 = new Customer(sampleCustomers[3])
     customer4 = new Customer(sampleCustomers[4])
+    date = new Date()
+    day = date.getDate()
+    month = date.getMonth() + 1
+    year = date.getFullYear()
+    currDate = `${year}/${month}/${day}`
   })
 
   it('should be a function', () => {
@@ -44,11 +49,6 @@ describe('Customer', () => {
   })
 
   it('should have a method to filter customer bookings by past and upcoming', () => {
-    const date = new Date()
-    let day = date.getDate()
-    let month = date.getMonth() + 1
-    let year = date.getFullYear()
-    let currDate = `${year}/${month}/${day}`
     expect(customer1.getBookingsByType(sampleBookings, currDate, "past")).to.deep.equal([sampleBookings[0], sampleBookings[1], sampleBookings[2]])
     expect(customer1.getBookingsByType(sampleBookings, currDate, "upcoming")).to.deep.equal([])
     expect(customer2.getBookingsByType(sampleBookings, currDate, "past")).to.deep.equal([sampleBookings[3], sampleBookings[4]])
@@ -56,11 +56,6 @@ describe('Customer', () => {
   })
 
   it('should return empty array if customer has no past or upcoming bookings', () => {
-    const date = new Date()
-    let day = date.getDate()
-    let month = date.getMonth() + 1
-    let year = date.getFullYear()
-    let currDate = `${year}/${month}/${day}`
     expect(customer3.getBookingsByType(sampleBookings, currDate, "past")).to.deep.equal([])
     expect(customer3.getBookingsByType(sampleBookings, currDate, "upcoming")).to.deep.equal([])
     expect(customer4.getBookingsByType(sampleBookings, currDate, "past")).to.deep.equal([])
