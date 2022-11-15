@@ -1,7 +1,7 @@
 // ~~~~~~~~~~~~~~~~~~~~Imports~~~~~~~~~~~~~~~~~~~~
 import './css/styles.css'
 import './images/5-stars.png'
-import {getData, postData} from './apiCalls'
+import { getData, postData } from './apiCalls'
 import Customer from './classes/Customer'
 
 // ~~~~~~~~~~~~~~~~~~~~Global Variables~~~~~~~~~~~~~~~~~~~~
@@ -18,7 +18,7 @@ const cost = document.querySelector('#costSummary')
 const pastBookings = document.querySelector('#pastBookingDisplay')
 const upcomingBookings = document.querySelector('#upcomingBookingDisplay')
 const submitButton = document.querySelector('#submitButton')
-const selectedDate = document.querySelector('#checkInDate') 
+const selectedDate = document.querySelector('#checkInDate')
 const selectedRoom = document.querySelector('#roomType')
 const availableRooms = document.querySelector('#availableRoomsDisplay')
 const loginButton = document.querySelector('#loginButton')
@@ -32,150 +32,150 @@ submitButton.addEventListener('click', displayAvailableRooms)
 availableRooms.addEventListener('click', bookRoom)
 loginButton.addEventListener('click', verifyUserLogin)
 selectedDate.addEventListener('keypress', (event) => {
-    if (event.key === 'Enter') {
-      displayAvailableRooms()
-    }
-  })
+  if (event.key === 'Enter') {
+    displayAvailableRooms()
+  }
+})
 selectedRoom.addEventListener('keypress', (event) => {
-    if (event.key === 'Enter') {
-      displayAvailableRooms()
-    }
-  })
+  if (event.key === 'Enter') {
+    displayAvailableRooms()
+  }
+})
 
 // ~~~~~~~~~~~~~~~~~~~~Functions~~~~~~~~~~~~~~~~~~~~
 function verifyUserLogin() {
-    userID = Number(username.value.slice(8))
-    if(username.value.slice(0, 8) === 'customer' && userID > 0 && userID <= 50 && password.value === 'overlook2021') {
-        fetchData(userID)
-    } else if (username.value === "" || password.value === "" ) {
-        loginError.innerText = `You must enter both a username and password.`
-    } else if (password.value !== 'overlook2021' || (username.value.slice(0, 8) !== 'customer' && !userID > 0 && !userID <= 50)) {
-        loginError.innerText = `Please enter valid username and password.`
-    }
+  userID = Number(username.value.slice(8))
+  if (username.value.slice(0, 8) === 'customer' && userID > 0 && userID <= 50 && password.value === 'overlook2021') {
+    fetchData(userID)
+  } else if (username.value === "" || password.value === "") {
+    loginError.innerText = `You must enter both a username and password.`
+  } else if (password.value !== 'overlook2021' || (username.value.slice(0, 8) !== 'customer' && !userID > 0 && !userID <= 50)) {
+    loginError.innerText = `Please enter valid username and password.`
+  }
 }
 
 function fetchData(userID) {
-    Promise.all([getData(`customers/${userID}`), getData('rooms'), getData('bookings')])
+  Promise.all([getData(`customers/${userID}`), getData('rooms'), getData('bookings')])
     .then(data => {
-        allCustomers = data[0]
-        allRooms = data[1].rooms
-        allBookings = data[2].bookings
-        currentCustomer = new Customer(allCustomers)
-        displayCustomerData(currentCustomer, allRooms, allBookings)
+      allCustomers = data[0]
+      allRooms = data[1].rooms
+      allBookings = data[2].bookings
+      currentCustomer = new Customer(allCustomers)
+      displayCustomerData(currentCustomer, allRooms, allBookings)
     })
 }
 
 function displayCustomerData(currentCustomer, allRooms, allBookings) {
-    loginPage.classList.add("hidden")
-    header.classList.remove("hidden")
-    main.classList.remove("hidden")
-    greeting.innerText = `Welcome, ${currentCustomer.name}!`
-    cost.innerHTML = `Your total cost of bookings is $${currentCustomer.getTotalCost(allBookings, allRooms).toFixed(2)}.`
-    displayCardsByType("upcoming")
-    displayCardsByType("past")
+  loginPage.classList.add("hidden")
+  header.classList.remove("hidden")
+  main.classList.remove("hidden")
+  greeting.innerText = `Welcome, ${currentCustomer.name}!`
+  cost.innerHTML = `Your total cost of bookings is $${currentCustomer.getTotalCost(allBookings, allRooms).toFixed(2)}.`
+  displayCardsByType("upcoming")
+  displayCardsByType("past")
 }
 
 function displayAvailableRooms() {
-    availableRooms.innerHTML = ''
-    filterRoomsByType()
-    if(filteredRooms.length === 0) {
-        availableRooms.innerHTML += `<p class="user-message">We are so sorry. There are no available rooms for your search criteria. Please try again.</p>`
-    } else if (selectedDate.value !== "") {
-        filteredRooms.forEach(room => {
-            availableRooms.innerHTML += availableRoomCards(room)
-        })
-    } else {
-        availableRooms.innerHTML += `<p class="user-message">You must select a date to see avilable rooms.</p>`
-    }
+  availableRooms.innerHTML = ''
+  filterRoomsByType()
+  if (filteredRooms.length === 0) {
+    availableRooms.innerHTML += `<p class="user-message">We are so sorry. There are no available rooms for your search criteria. Please try again.</p>`
+  } else if (selectedDate.value !== "") {
+    filteredRooms.forEach(room => {
+      availableRooms.innerHTML += availableRoomCards(room)
+    })
+  } else {
+    availableRooms.innerHTML += `<p class="user-message">You must select a date to see avilable rooms.</p>`
+  }
 }
 
 function bookRoom(event) {
-    if(event.target.classList.contains('book-room')) {
-        filteredRooms.forEach(room => {
-            const roomID = selectedDate.value + "-" + room.number
-            if(event.target.parentNode.id === roomID) {
-                const customerBooking = {
-                    method: 'POST', 
-                    headers: {'Content-Type': 'application/json'},
-                    body:JSON.stringify({"userID": currentCustomer.id, "date": selectedDate.value.split("-").join("/"), "roomNumber": room.number})
-                }
-                postData(customerBooking)
-                    .then((response) => response)
-                    .then(() => {
-                        availableRooms.innerHTML = `<p class="user-message">BOOKING CONFIRMED!</p>`
-                        setTimeout(() => {
-                            resetCustomerDashboard()
-                            fetchData(userID)
-                        }, 3000)
-                        })
-            }
-        })
-    }
+  if (event.target.classList.contains('book-room')) {
+    filteredRooms.forEach(room => {
+      const roomID = selectedDate.value + "-" + room.number
+      if (event.target.parentNode.id === roomID) {
+        const customerBooking = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ "userID": currentCustomer.id, "date": selectedDate.value.split("-").join("/"), "roomNumber": room.number })
+        }
+        postData(customerBooking)
+          .then((response) => response)
+          .then(() => {
+            availableRooms.innerHTML = `<p class="user-message">BOOKING CONFIRMED!</p>`
+            setTimeout(() => {
+              resetCustomerDashboard()
+              fetchData(userID)
+            }, 3000)
+          })
+      }
+    })
+  }
 }
 
 // ~~~~~~~~~~~~~~~~~~~~Helper Functions~~~~~~~~~~~~~~~~~~~~
 function findRoomsByDate() {
-    const roomsFilteredByDate = allBookings.filter(booking => {
-        const selectedDateReformatted = selectedDate.value.split("-").join("/")
-        return (booking.date === selectedDateReformatted)
-        }).map(bookedRoom => bookedRoom.roomNumber)
-        const stuff = allRooms.reduce((acc, room) => {
-            if(!roomsFilteredByDate.includes(room.number)) {
-                acc.push(room)
-            }
-            return acc
-        }, [])
-        filteredRooms = stuff
+  const roomsFilteredByDate = allBookings.filter(booking => {
+    const selectedDateReformatted = selectedDate.value.split("-").join("/")
+    return (booking.date === selectedDateReformatted)
+  }).map(bookedRoom => bookedRoom.roomNumber)
+  const stuff = allRooms.reduce((acc, room) => {
+    if (!roomsFilteredByDate.includes(room.number)) {
+      acc.push(room)
+    }
+    return acc
+  }, [])
+  filteredRooms = stuff
 }
 function filterRoomsByType() {
-    findRoomsByDate()
-    const roomsFilteredByType = filteredRooms.filter(room => {
-        const selectedRoomReformatted = selectedRoom.value.split("-").join(" ")
-        if(room.roomType === selectedRoomReformatted) {
-            return room
-        } else if (selectedRoomReformatted === "all rooms") {
-            return room
-        }
-    })
-    filteredRooms = roomsFilteredByType
+  findRoomsByDate()
+  const roomsFilteredByType = filteredRooms.filter(room => {
+    const selectedRoomReformatted = selectedRoom.value.split("-").join(" ")
+    if (room.roomType === selectedRoomReformatted) {
+      return room
+    } else if (selectedRoomReformatted === "all rooms") {
+      return room
+    }
+  })
+  filteredRooms = roomsFilteredByType
 }
 
 function displayCardsByType(type) {
-    let userBookings
-    if (type === "upcoming") {
-        userBookings = currentCustomer.getBookingsByType(allBookings, getCurrentDate(), type)
-        userBookings.forEach(booking => {
-            allRooms.forEach(room => {
-                if(booking.roomNumber === room.number) {
-                    upcomingBookings.innerHTML += renderCards(booking, room)
-                }
-            })
-        })
-    } else {
-        userBookings = currentCustomer.getBookingsByType(allBookings, getCurrentDate(), type)
-        userBookings.forEach(booking => {
-            allRooms.forEach(room => {
-                if(booking.roomNumber === room.number) {
-                    pastBookings.innerHTML += renderCards(booking, room)
-                }
-            })
-        })
-    }  
-    if (type === "upcoming" && !userBookings.length) {
-        upcomingBookings.innerHTML += `<p class="user-message">You do not have any upcoming reservations with us. Book now!</p>`
-    } else if (type === "past" && !userBookings.length) {
-        pastBookings.innerHTML += `<p class="user-message">You do not have any past reservations with us.</p>`
-    }
+  let userBookings
+  if (type === "upcoming") {
+    userBookings = currentCustomer.getBookingsByType(allBookings, getCurrentDate(), type)
+    userBookings.forEach(booking => {
+      allRooms.forEach(room => {
+        if (booking.roomNumber === room.number) {
+          upcomingBookings.innerHTML += renderCards(booking, room)
+        }
+      })
+    })
+  } else {
+    userBookings = currentCustomer.getBookingsByType(allBookings, getCurrentDate(), type)
+    userBookings.forEach(booking => {
+      allRooms.forEach(room => {
+        if (booking.roomNumber === room.number) {
+          pastBookings.innerHTML += renderCards(booking, room)
+        }
+      })
+    })
+  }
+  if (type === "upcoming" && !userBookings.length) {
+    upcomingBookings.innerHTML += `<p class="user-message">You do not have any upcoming reservations with us. Book now!</p>`
+  } else if (type === "past" && !userBookings.length) {
+    pastBookings.innerHTML += `<p class="user-message">You do not have any past reservations with us.</p>`
+  }
 }
 
 function resetCustomerDashboard() {
-    selectedDate.value = ''
-    selectedRoom.value = 'all-rooms'
-    availableRooms.innerHTML = `<p class="user-message">Select a date and room type to search available rooms.</p>`
+  selectedDate.value = ''
+  selectedRoom.value = 'all-rooms'
+  availableRooms.innerHTML = `<p class="user-message">Select a date and room type to search available rooms.</p>`
 }
 
 function renderCards(booking, room) {
-    return (`<article class="booking-card" tabindex="0">
+  return (`<article class="booking-card" tabindex="0">
                 <p>Date: ${booking.date}</p>
                 <p>Room #${booking.roomNumber}</p>
                 <p>${room.roomType.toUpperCase()}</p>
@@ -186,7 +186,7 @@ function renderCards(booking, room) {
 }
 
 function availableRoomCards(room) {
-    return (`<article class="booking-card" id="${selectedDate.value}-${room.number}" tabindex="0">
+  return (`<article class="booking-card" id="${selectedDate.value}-${room.number}" tabindex="0">
                 <p>Date: ${selectedDate.value}</p>
                 <p>Room #${room.number}</p>
                 <p>${room.roomType.toUpperCase()}</p>
@@ -198,18 +198,18 @@ function availableRoomCards(room) {
 }
 
 function getCurrentDate() {
-    const date = new Date()
-    let day = date.getDate()
-    let month = date.getMonth() + 1
-    let year = date.getFullYear()
-    let currDate = `${year}/${month}/${day}`
-    return currDate
+  const date = new Date()
+  let day = date.getDate()
+  let month = date.getMonth() + 1
+  let year = date.getFullYear()
+  let currDate = `${year}/${month}/${day}`
+  return currDate
 }
 
 function displayBidetStatus(room) {
-    if (room.bidet) {
-        return "Yes"
-    } else {
-        return "No"
-    }
+  if (room.bidet) {
+    return "Yes"
+  } else {
+    return "No"
+  }
 }
