@@ -86,15 +86,15 @@ function displayCustomerData(currentCustomer, allRooms, allBookings) {
 function displayAvailableRooms() {
   availableRooms.innerHTML = ''
   checkDate()
-    if (filteredRooms.length === 0) {
-      availableRooms.innerHTML += `<p class="user-message">We are so sorry. There are no available rooms for your search criteria. Please try again.</p>`
-    } else if (selectedDate.value !== "") {
-      filteredRooms.forEach(room => {
-        availableRooms.innerHTML += availableRoomCards(room)
-      })
-    } else {
-      availableRooms.innerHTML += `<p class="user-message">You must select a date to see avilable rooms.</p>`
-    }
+  if (filteredRooms.length === 0 && selectedDate.value >= currDate.split("/").join("-")) {
+    availableRooms.innerHTML += `<p class="user-message">We are so sorry. There are no available rooms for your search criteria. Please try again.</p>`
+  } else if (selectedDate.value !== "" && selectedDate.value >= currDate.split("/").join("-")) {
+    filteredRooms.forEach(room => {
+      availableRooms.innerHTML += availableRoomCards(room)
+    })
+  } else if (selectedDate.value === "") {
+    availableRooms.innerHTML += `<p class="user-message">You must select a date to see avilable rooms.</p>`
+  }
 }
 
 function bookRoom(event) {
@@ -218,7 +218,7 @@ function checkDate() {
   getCurrentDate()
   if(selectedDate.value >= currDate.split("/").join("-")) {
     filterRoomsByType()
-  } else {
+  } else if(selectedDate.value !== "" && selectedDate.value < currDate.split("/").join("-")) {
     availableRooms.innerHTML = ''
     availableRooms.innerHTML = `<p class="user-message">The date you selected has passed. Please choose another date.</p>`
   }
