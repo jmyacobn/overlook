@@ -6,6 +6,10 @@ const getData = (dataSource) => {
       }
       return response.json()
     })
+    .catch(err => {
+      console.log(err)
+      availableRooms.innerHTML = "Oops, something went wrong. Please try again"
+    })
 }
 
 const postData = (newBooking) => {
@@ -15,6 +19,10 @@ const postData = (newBooking) => {
         throw new Error("Sorry, your booking request did not go through. Please try again.")
       }
       return response.json()
+    })
+    .catch(err => {
+      console.log(err)
+      availableRooms.innerHTML = "Oops, something went wrong. Please try again"
     })
 }
 

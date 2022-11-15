@@ -11,6 +11,7 @@ let allBookings
 let currentCustomer
 let filteredRooms = []
 let userID
+let currDate
 
 // ~~~~~~~~~~~~~~~~~~~~Query Selectors~~~~~~~~~~~~~~~~~~~~
 const greeting = document.querySelector('#greeting')
@@ -26,6 +27,7 @@ const loginPage = document.querySelector('#loginPage')
 const loginError = document.querySelector('#loginError')
 const header = document.querySelector('header')
 const main = document.querySelector('main')
+const password =document.querySelector('#password')
 
 // ~~~~~~~~~~~~~~~~~~~~Event Listeners~~~~~~~~~~~~~~~~~~~~
 submitButton.addEventListener('click', displayAvailableRooms)
@@ -39,6 +41,11 @@ selectedDate.addEventListener('keypress', (event) => {
 selectedRoom.addEventListener('keypress', (event) => {
   if (event.key === 'Enter') {
     displayAvailableRooms()
+  }
+})
+password.addEventListener('keypress', (event) => {
+  if (event.key === 'Enter') {
+    verifyUserLogin()
   }
 })
 
@@ -71,20 +78,21 @@ function displayCustomerData(currentCustomer, allRooms, allBookings) {
   main.classList.remove("hidden")
   greeting.innerText = `Welcome, ${currentCustomer.name}!`
   cost.innerHTML = `Your total cost of bookings is $${currentCustomer.getTotalCost(allBookings, allRooms).toFixed(2)}.`
+  selectedDate.min = new Date().toLocaleDateString('en-ca')
   displayCardsByType("upcoming")
   displayCardsByType("past")
 }
 
 function displayAvailableRooms() {
   availableRooms.innerHTML = ''
-  filterRoomsByType()
-  if (filteredRooms.length === 0) {
+  checkDate()
+  if (filteredRooms.length === 0 && selectedDate.value >= currDate.split("/").join("-")) {
     availableRooms.innerHTML += `<p class="user-message">We are so sorry. There are no available rooms for your search criteria. Please try again.</p>`
-  } else if (selectedDate.value !== "") {
+  } else if (selectedDate.value !== "" && selectedDate.value >= currDate.split("/").join("-")) {
     filteredRooms.forEach(room => {
       availableRooms.innerHTML += availableRoomCards(room)
     })
-  } else {
+  } else if (selectedDate.value === "") {
     availableRooms.innerHTML += `<p class="user-message">You must select a date to see avilable rooms.</p>`
   }
 }
@@ -119,13 +127,13 @@ function findRoomsByDate() {
     const selectedDateReformatted = selectedDate.value.split("-").join("/")
     return (booking.date === selectedDateReformatted)
   }).map(bookedRoom => bookedRoom.roomNumber)
-  const stuff = allRooms.reduce((acc, room) => {
+  const roomsByDate = allRooms.reduce((acc, room) => {
     if (!roomsFilteredByDate.includes(room.number)) {
       acc.push(room)
     }
     return acc
   }, [])
-  filteredRooms = stuff
+  filteredRooms = roomsByDate
 }
 function filterRoomsByType() {
   findRoomsByDate()
@@ -202,8 +210,18 @@ function getCurrentDate() {
   let day = date.getDate()
   let month = date.getMonth() + 1
   let year = date.getFullYear()
-  let currDate = `${year}/${month}/${day}`
+  currDate = `${year}/${month}/${day}`
   return currDate
+}
+
+function checkDate() {
+  getCurrentDate()
+  if(selectedDate.value >= currDate.split("/").join("-")) {
+    filterRoomsByType()
+  } else if(selectedDate.value !== "" && selectedDate.value < currDate.split("/").join("-")) {
+    availableRooms.innerHTML = ''
+    availableRooms.innerHTML = `<p class="user-message">The date you selected has passed. Please choose another date.</p>`
+  }
 }
 
 function displayBidetStatus(room) {
