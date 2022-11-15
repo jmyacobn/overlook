@@ -49,17 +49,17 @@ describe('Customer', () => {
   })
 
   it('should have a method to filter customer bookings by past and upcoming', () => {
-    expect(customer1.getBookingsByType(sampleBookings, currDate, "past")).to.deep.equal([sampleBookings[0], sampleBookings[1], sampleBookings[2]])
-    expect(customer1.getBookingsByType(sampleBookings, currDate, "upcoming")).to.deep.equal([])
-    expect(customer2.getBookingsByType(sampleBookings, currDate, "past")).to.deep.equal([sampleBookings[3], sampleBookings[4]])
-    expect(customer2.getBookingsByType(sampleBookings, currDate, "upcoming")).to.deep.equal([sampleBookings[5]])
+    expect(customer1.getBookingsByType(sampleBookings, currDate, 'past')).to.deep.equal([sampleBookings[0], sampleBookings[1], sampleBookings[2]])
+    expect(customer1.getBookingsByType(sampleBookings, currDate, 'upcoming')).to.deep.equal([])
+    expect(customer2.getBookingsByType(sampleBookings, currDate, 'past')).to.deep.equal([sampleBookings[3], sampleBookings[4]])
+    expect(customer2.getBookingsByType(sampleBookings, currDate, 'upcoming')).to.deep.equal([sampleBookings[5]])
   })
 
   it('should return empty array if customer has no past or upcoming bookings', () => {
-    expect(customer3.getBookingsByType(sampleBookings, currDate, "past")).to.deep.equal([])
-    expect(customer3.getBookingsByType(sampleBookings, currDate, "upcoming")).to.deep.equal([])
-    expect(customer4.getBookingsByType(sampleBookings, currDate, "past")).to.deep.equal([])
-    expect(customer4.getBookingsByType(sampleBookings, currDate, "upcoming")).to.deep.equal([])
+    expect(customer3.getBookingsByType(sampleBookings, currDate, 'past')).to.deep.equal([])
+    expect(customer3.getBookingsByType(sampleBookings, currDate, 'upcoming')).to.deep.equal([])
+    expect(customer4.getBookingsByType(sampleBookings, currDate, 'past')).to.deep.equal([])
+    expect(customer4.getBookingsByType(sampleBookings, currDate, 'upcoming')).to.deep.equal([])
   })
 
   it('should have a method to calculate the total cost of all customer bookings', () => {

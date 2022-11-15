@@ -21,8 +21,8 @@ describe('Room', () => {
   })
 
   it('should have property of room type', () => {
-    expect(room1.roomType).to.equal("suite")
-    expect(room2.roomType).to.equal("junior suite")
+    expect(room1.roomType).to.equal('suite')
+    expect(room2.roomType).to.equal('junior suite')
   })
 
   it('should have property of bidet', () => {
@@ -31,8 +31,8 @@ describe('Room', () => {
   })
 
   it('should have property of bed size', () => {
-    expect(room1.bedSize).to.equal("full")
-    expect(room2.bedSize).to.equal("queen")
+    expect(room1.bedSize).to.equal('full')
+    expect(room2.bedSize).to.equal('queen')
   })
 
   it('should have property of bed count', () => {

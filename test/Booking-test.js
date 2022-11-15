@@ -16,8 +16,8 @@ describe('Booking', () => {
   })
 
   it('should have property of id', () => {
-    expect(booking1.bookingID).to.equal("5fwrgu4i7k55hl76z")
-    expect(booking2.bookingID).to.equal("5fwrgu4i7k55hl70e")
+    expect(booking1.bookingID).to.equal('5fwrgu4i7k55hl76z')
+    expect(booking2.bookingID).to.equal('5fwrgu4i7k55hl70e')
   })
 
   it('should have property of user id', () => {
@@ -26,8 +26,8 @@ describe('Booking', () => {
   })
 
   it('should have property of date', () => {
-    expect(booking1.date).to.equal("2022/02/15")
-    expect(booking2.date).to.equal("2022/01/20")
+    expect(booking1.date).to.equal('2022/02/15')
+    expect(booking2.date).to.equal('2022/01/20')
   })
 
   it('should have property of roomNumber', () => {
