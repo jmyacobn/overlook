@@ -109,7 +109,6 @@ function bookRoom(event) {
           body: JSON.stringify({ "userID": currentCustomer.id, "date": selectedDateReformatted, "roomNumber": room.number })
         }
         postData(customerBooking)
-          .then((response) => response)
           .then(() => {
             availableRooms.innerHTML = `<p class="user-message">BOOKING CONFIRMED!</p>`
             setTimeout(() => {
